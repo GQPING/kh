@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyjd.kh.dao.PermissionDao">
+
+    <sql id="base">
+          a.id, a.menuID, a.operateID, a.permissionName, a.permissionHref, a.remarkDescription,
+          b.id as menu_id, b.parentID, b.menuName, b.menuHref, b.remarkDescription as menu_remarkDescription, b.hasOperationChildren,
+          c.id as operation_id, c.operateName, c.remarkDescription as operation_remarkDescription
+    </sql>
+
+    <resultMap type="com.zyjd.kh.model.Permission" id="res">
+         <id property="id" column="id"/>
+         <result property="menuID" column="menuID"/>
+         <result property="operateID" column="operateID"/>
+         <result property="permissionName" column="permissionName"/>
+         <result property="permissionHref" column="permissionHref"/>
+         <result property="remarkDescription" column="remarkDescription" />
+         <association property="menu" javaType="Menu">
+             <id property="id" column="menu_id"/>
+             <result property="parentID" column="parentID"/>
+             <result property="menuName" column="menuName"/>
+             <result property="menuHref" column="menuHref"/>
+             <result property="remarkDescription" column="menu_remarkDescription"/>
+             <result property="hasOperationChildren" column="hasOperationChildren"/>
+         </association>
+         <association property="operation" javaType="Operation">
+             <id property="id" column="operation_id"/>
+             <result property="operateName" column="operateName"/>
+             <result property="remarkDescription" column="operation_remarkDescription" />
+         </association> 
+    </resultMap>
+
+    <insert id="add" parameterType="Permission" useGeneratedKeys="true" keyProperty="id"  keyColumn="id">
+         insert into permission
+         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="menuID != null">
+                menuID,
+            </if>
+            <if test="operateID != null">
+                operateID,
+            </if>
+            <if test="permissionName != null">
+                permissionName,
+            </if>
+            <if test="permissionHref != null">
+                permissionHref,
+            </if>
+            <if test="remarkDescription != null">
+                remarkDescription,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="menuID != null">
+                #{menuID},
+            </if>
+            <if test="operateID != null">
+                #{operateID},
+            </if>
+            <if test="permissionName != null">
+                #{permissionName},
+            </if>
+            <if test="permissionHref != null">
+                #{permissionHref},
+            </if>
+            <if test="remarkDescription != null">
+                #{remarkDescription},
+            </if>
+        </trim>
+    </insert>
+
+	<delete id="delete" parameterType="int">
+		delete from permission where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="Permission">
+		update permission
+		<set>
+		    <if test="menuID != null">
+                menuID = #{menuID},
+            </if>
+		    <if test="operateID != null">
+                operateID = #{operateID},
+            </if>
+			<if test="permissionName != null">
+				permissionName = #{permissionName},
+			</if>
+            <if test="permissionHref != null">
+                permissionHref = #{permissionHref},
+            </if>
+            <if test="remarkDescription != null">
+                remarkDescription = #{remarkDescription},
+            </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="findById" parameterType="int" resultMap="res">
+		select <include refid="base" /> from permission as a, menu as b, operation as c 
+		where a.id = #{id} and a.menuID = b.id and a.operateID = c.id
+	</select>
+
+    <select id="findAll" resultMap="res">
+		select <include refid="base" /> from permission as a, menu as b, operation as c
+		where a.menuID = b.id and a.operateID = c.id
+	</select>
+
+	<select id="findByCondition" parameterType="Permission" resultMap="res">
+		select <include refid="base" /> from permission as a, menu as b, operation as c
+		<where>
+            <!--模糊查询-->
+            <if test="searchString != null">
+                and (b.menuName like concat(concat('%', #{searchString}), '%')
+                or c.operateName like concat(concat('%', #{searchString}), '%')
+                or a.permissionName like concat(concat('%', #{searchString}), '%')
+                or a.permissionHref like concat(concat('%', #{searchString}), '%')
+                or a.remarkDescription like concat(concat('%', #{searchString}), '%'))
+            </if>
+            and a.menuID = b.id and a.operateID = c.id
+		</where>
+	</select>
+
+    <select id="findByConditions" parameterType="Permission" resultMap="res">
+        select <include refid="base" /> from permission as a, menu as b, operation as c
+        <where>
+            <if test="permissionName != null">
+                and a.permissionName = #{permissionName}
+            </if>
+            and a.menuID = b.id and a.operateID = c.id
+        </where>
+    </select>
+
+	<select id="findByConditionPage" parameterType="Permission" resultMap="res">
+		select <include refid="base" /> from permission as a, menu as b, operation as c
+		<where>
+            <!--模糊查询-->
+            <if test="searchString != null">
+                and (b.menuName like concat(concat('%', #{searchString}), '%')
+                or c.operateName like concat(concat('%', #{searchString}), '%')
+                or a.permissionName like concat(concat('%', #{searchString}), '%')
+                or a.permissionHref like concat(concat('%', #{searchString}), '%')
+                or a.remarkDescription like concat(concat('%', #{searchString}), '%'))
+            </if>
+            and a.menuID = b.id and a.operateID = c.id
+		</where>		
+		<if test="start !=null and limit != null">
+			order by a.id limit #{start},#{limit}
+		</if>
+	</select>
+
+</mapper>

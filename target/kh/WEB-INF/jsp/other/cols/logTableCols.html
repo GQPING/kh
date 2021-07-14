@@ -1,0 +1,24 @@
+<script type="text/html" id="idTpl">
+    <span data-d="{{d.id}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.id}}</span>
+</script>
+<script type="text/html" id="nickNameTpl">
+    <span data-d="{{d.user.nickName}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.user.nickName}}</span>
+</script>
+<script type="text/html" id="userNameTpl">
+    <span data-d="{{d.user.userName}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.user.userName}}</span>
+</script>
+<script type="text/html" id="roleNameTpl">
+    <span data-d="{{d.user.role.roleName}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.user.role.roleName}}</span>
+</script>
+<script type="text/html" id="operateTypeTpl">
+    <span data-d="{{d.operateType}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.operateType}}</span>
+</script>
+<script type="text/html" id="operateDetailTpl">
+    <span data-d="{{d.operateDetail}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.operateDetail}}</span>
+</script>
+<script type="text/html" id="logsIpAddressTpl">
+    <span data-d="{{d.logsIpAddress}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.logsIpAddress}}</span>
+</script>
+<script type="text/html" id="createDateTpl">
+    <span data-d="{{layui.util.toDateString(d.createDate, 'yyyy-MM-dd HH:mm:ss')}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{layui.util.toDateString(d.createDate, 'yyyy-MM-dd HH:mm:ss')}}</span>
+</script>

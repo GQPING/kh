@@ -1,0 +1,27 @@
+<div class="page-container">
+    <div class="mt" style="padding:-12px 0px 0px 0px;">
+        <div class="demoTable layui-form">
+            <div class="layui-inline" style="width: 100%;">
+                <div class="layui-inline" style="width: 20%;position:relative;min-width: 330px;padding: 6px 12px 12px 0px;">
+                    <div style="position:absolute;right:2px;top:10px;cursor:pointer;display: none;padding: 6px 12px 12px 0px;" class="input_clear">
+                        <button type="button" class="clear" style="border: 0px;background-color:white;">
+                            <i class="Hui-iconfont" style="color: red;">&#xe60b;</i>
+                        </button>
+                    </div>
+                    <input class="layui-input" oninput="showClear(this)" id="searchString" autocomplete="off" placeholder="请输入内容查询">
+                </div>
+                <div class="layui-inline" style="width: 10%;min-width: 110px;padding: 6px 0px 12px 0px;">
+                    <input class="layui-input" id="timeStart" autocomplete="off" placeholder="开始日期">
+                </div>
+                <span style="color:#555;font-weight: bold;font-size:16px;padding: 12px 0px 12px 0px;">-</span>
+                <div class="layui-inline" style="width: 10%;min-width: 110px;padding: 6px 12px 12px 0px;">
+                    <input class="layui-input" id="timeFinal" autocomplete="off" placeholder="结束日期">
+                </div>
+                <button class="layui-btn" data-type="reload" style="margin:-6px 0px 0px 0px;padding: 0px 12px 0px 12px;">
+                    <i class="Hui-iconfont">&#xe665;</i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
+</div>

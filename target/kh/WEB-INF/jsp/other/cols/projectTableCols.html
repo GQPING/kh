@@ -1,0 +1,115 @@
+<script type="text/html" id="signDateTpl">
+    <span data-d="{{layui.util.toDateString(d.signDate, 'yyyy-MM-dd')}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{layui.util.toDateString(d.signDate, 'yyyy-MM-dd')}}</span>
+</script>
+<script type="text/html" id="projectNumberTpl">
+    <span data-d="{{d.projectNumber}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.projectNumber}}</span>
+</script>
+<script type="text/html" id="customerNameTpl">
+    <span data-d="{{d.customer.customerName}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.customer.customerName}}</span>
+</script>
+<script type="text/html" id="projectNameTpl">
+    <a href="javascript:void(0)" lay-event="prlook" data-d="{{d.projectName}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-link">{{ d.projectName }}</a>
+</script>
+<!--标签样式：label-default、label-primary、label-secondary、label-warning、label-danger、label-success-->
+<script type="text/html" id="projectTypeTpl">
+    {{#  if(d.projectType === '全包'){ }}
+    <span class="label label-warning radius" data-d="{{d.projectType}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()">{{ d.projectType }}</span>
+    {{#  } else if(d.projectType === '按平方') { }}
+    <span class="label label-success radius" data-d="{{d.projectType}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()">{{ d.projectType }}</span>
+    {{#  } else { }}
+    <span class="label label-secondary radius" data-d="{{d.projectType}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()">{{ d.projectType }}</span>
+    {{#  } }}
+</script>
+<script type="text/html" id="projectAddressTpl">
+    <span data-d="{{d.projectAddress}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.projectAddress}}</span>
+</script>
+<script type="text/html" id="projectDescriptionTpl">
+    <span data-d="{{d.projectDescription}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.projectDescription}}</span>
+</script>
+<script type="text/html" id="projectPersonTpl">
+    <span data-d="{{d.projectPerson}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.projectPerson}}</span>
+</script>
+<script type="text/html" id="projectDateTpl">
+    {{# var fn = function(){
+    return layui.util.toDateString(d.projectStartDate, 'yyyy-MM-dd')+" ~ "+layui.util.toDateString(d.projectFinalDate, 'yyyy-MM-dd');
+    };
+    }}
+    <span data-d="{{ fn() }}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{ fn() }}</span>
+</script>
+<script type="text/html" id="projectCycleTpl">
+    <span data-d="{{ d.projectCycle }}天" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{ d.projectCycle }}天</span>
+</script>
+<script type="text/html" id="projectStateTpl">
+    {{# var fn = function(){
+    if(d.projectPayState === "已付清"){
+    return "回款已结束";
+    }
+    var cur = new Date(Date.parse(layui.util.toDateString(new Date(), 'yyyy-MM-dd')));
+    var end = new Date(Date.parse(layui.util.toDateString(d.deadLineDate, 'yyyy-MM-dd')));
+    var t1 = cur.getTime();
+    var t2 = end.getTime();
+    var datetime=1000*60*60*24;
+    var minusDays = Math.floor(((t2-t1)/datetime));
+    if(minusDays<0){
+    return "过期" + Math.abs(minusDays) + "天";
+    } else{
+    return "剩余" + minusDays + "天";
+    }
+    };
+    }}
+    {{#  if(fn().indexOf("剩余")!=-1){ }}
+    <span data-d="{{ fn() }}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" style="color: #009688;" class="layui-table-label">{{ fn() }}</span>
+    {{#  } else { }}
+    {{#  if(fn().indexOf("过期")!=-1){ }}
+    <span data-d="{{ fn() }}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" style="color: #FF5722;" class="layui-table-label">{{ fn() }}</span>
+    {{#  }}}
+    {{#  if(fn().indexOf("结束")!=-1){ }}
+    <span data-d="{{ fn() }}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" style="color: #c2c2c2;" class="layui-table-label">{{ fn() }}</span>
+    {{#  }}}
+    {{#  } }}
+</script>
+<script type="text/html" id="projectPriceTpl">
+    <span data-d="{{parseFloat(d.projectPrice).toFixed(2)}}元" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{parseFloat(d.projectPrice).toFixed(2)}}元</span>
+</script>
+<script type="text/html" id="projectAreaTpl">
+    <span data-d="{{parseFloat(d.projectArea).toFixed(2)}}m²" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{parseFloat(d.projectArea).toFixed(2)}}m²</span>
+</script>
+<script type="text/html" id="projectBudgetTpl">
+    <span data-d="{{parseFloat(d.projectBudget).toFixed(2)}}元" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{parseFloat(d.projectBudget).toFixed(2)}}元</span>
+</script>
+<script type="text/html" id="projectCostTpl">
+    <span data-d="{{parseFloat(d.projectCost).toFixed(2)}}元" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{parseFloat(d.projectCost).toFixed(2)}}元</span>
+</script>
+<script type="text/html" id="projectIncomeTpl">
+    <span data-d="{{parseFloat(d.projectIncome).toFixed(2)}}元" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{parseFloat(d.projectIncome).toFixed(2)}}元</span>
+</script>
+<script type="text/html" id="projectInQuotaTpl">
+    <span data-d="{{parseFloat(d.projectInQuota).toFixed(2)}}元" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label" style="color: #009688;">{{parseFloat(d.projectInQuota).toFixed(2)}}元</span>
+</script>
+<script type="text/html" id="projectBadQuotaTpl">
+    <span data-d="{{parseFloat(d.projectBadQuota).toFixed(2)}}元" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{parseFloat(d.projectBadQuota).toFixed(2)}}元</span>
+</script>
+<script type="text/html" id="projectUnQuotaTpl">
+    <span data-d="{{parseFloat(d.projectUnQuota).toFixed(2)}}元" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label" style="color:#FFB800;">{{parseFloat(d.projectUnQuota).toFixed(2)}}元</span>
+</script>
+<script type="text/html" id="deadLineDateTpl">
+    <span data-d="{{layui.util.toDateString(d.deadLineDate, 'yyyy-MM-dd')}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{layui.util.toDateString(d.deadLineDate, 'yyyy-MM-dd')}}</span>
+</script>
+<script type="text/html" id="projectDelayTpl">
+    <span data-d="{{parseFloat(d.projectDelay).toFixed(2)}}元" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{parseFloat(d.projectDelay).toFixed(2)}}元</span>
+</script>
+<script type="text/html" id="projectPayStateTpl">
+    {{#  if(d.projectPayState === "已付清"){ }}
+    <span data-d="{{ d.projectPayState }}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label" style="color: #009688;">{{ d.projectPayState }}</span>
+    {{#  } else if(d.projectPayState === "未付清"){ }}
+    <span data-d="{{ d.projectPayState }}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label" style="color: #c2c2c2;">{{ d.projectPayState }}</span>
+    {{#  } else { }}
+    <span data-d="{{ d.projectPayState }}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label" style="color:#FF5722;">{{ d.projectPayState }}</span>
+    {{#  } }}
+</script>
+<script type="text/html" id="hasBillTpl">
+    <input type="checkbox" data-d="{{d.hasBill==1?'已开票':'未开票' }}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" lay-skin="switch" lay-text="已开票|未开票" {{ d.hasBill==1?'checked':'' }} disabled>
+</script>
+<script type="text/html" id="remarkDescriptionTpl">
+    <span data-d="{{d.remarkDescription}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.remarkDescription}}</span>
+</script>

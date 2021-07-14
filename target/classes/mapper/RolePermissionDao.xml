@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyjd.kh.dao.RolePermissionDao">
+
+    <sql id="base">
+          a.roleID, a.permissionID,
+          b.id as role_id, b.roleName, b.remarkDescription as role_remarkDescription,
+          c.id as permission_id, c.menuID, c.operateID, c.permissionName, c.permissionHref, c.remarkDescription as permission_remarkDescription
+    </sql>
+
+    <resultMap type="com.zyjd.kh.model.RolePermission" id="res">
+         <result property="roleID" column="roleID"/>
+         <result property="permissionID" column="permissionID"/>
+         <association property="role" javaType="Role">
+            <id property="id" column="role_id"/>
+            <result property="roleName" column="roleName"/>
+            <result property="remarkDescription" column="role_remarkDescription" />
+         </association>
+         <association property="permission" javaType="Permission">
+            <id property="id" column="permission_id"/>
+            <result property="menuID" column="menuID"/>
+            <result property="operateID" column="operateID"/>
+            <result property="permissionName" column="permissionName"/>
+            <result property="permissionHref" column="permissionHref"/>
+            <result property="remarkDescription" column="permission_remarkDescription" />
+         </association> 
+    </resultMap>
+
+    <insert id="add" parameterType="RolePermission" useGeneratedKeys="true" keyProperty="id"  keyColumn="id">
+         insert into rolepermission
+         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleID != null">
+                roleID,
+            </if>
+            <if test="permissionID != null">
+                permissionID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleID != null">
+                #{roleID},
+            </if>
+            <if test="permissionID != null">
+                #{permissionID},
+            </if>
+        </trim>
+    </insert>
+
+	<delete id="delete" parameterType="RolePermission">
+		delete from rolepermission where roleID = #{roleID} and permissionID = #{permissionID}
+	</delete>
+
+	<select id="findById" parameterType="RolePermission" resultMap="res">
+		select <include refid="base" /> from rolepermission as a, role as b, permission as c
+		where a.roleID = #{roleID} and a.permissionID = #{permissionID} and a.roleID = b.id and a.permissionID = c.id
+	</select>
+
+    <select id="findAll" resultMap="res">
+		select <include refid="base" /> from rolepermission as a, role as b, permission as c
+		where a.roleID = b.id and a.permissionID = c.id
+	</select>
+
+	<select id="findByCondition" parameterType="RolePermission" resultMap="res">
+		select <include refid="base" /> from rolepermission as a, role as b, permission as c
+		<where>
+			<if test="roleID != null">
+				and a.roleID = #{roleID}
+			</if>
+			<if test="permissionID != null">
+				and a.permissionID = #{permissionID}
+			</if>
+            and a.roleID = b.id and a.permissionID = c.id
+		</where>
+	</select>
+
+</mapper>

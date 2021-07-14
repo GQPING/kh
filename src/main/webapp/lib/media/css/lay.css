@@ -1,0 +1,11 @@
+.layui-form-select dl {
+    width: 0px;
+    min-width: 100%;
+    max-height: 300px;
+}
+.layui-layer-tips {
+    word-break: break-all;
+}
+.layui-table-grid-down {
+    display: none;
+}

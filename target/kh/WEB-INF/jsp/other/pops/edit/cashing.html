@@ -1,0 +1,55 @@
+<form class="layui-form">
+    <table class="layui-table layui-xs" lay-skin="nob">
+        <colgroup>
+            <col width="7%" style="min-width: 90px;max-width: 90px;">
+            <col>
+        </colgroup>
+        <tbody>
+        <tr>
+            <td align="right" style="padding: 9px 0px 9px 0px;">所属项目：</td>
+            <td align="left" style="padding: 9px 15px 9px 0px;">
+                <select class="layui-input" id="projectID" lay-filter="projectID" lay-search></select>
+            </td>
+        </tr>
+        <tr>
+            <td align="right" style="padding: 9px 0px 9px 0px;">收款类型：</td>
+            <td align="left" style="padding: 9px 15px 9px 0px;">
+                <select class="layui-input" id="payType" lay-filter="payType">
+                    <option value="">请选择</option>
+                    <option value="对公">对公</option>
+                    <option value="对私">对私</option>
+                    <option value="个人">个人</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td align="right" style="padding: 9px 0px 9px 0px;"><label style="letter-spacing:0.5em;margin-right:-0.5em;">收款人</label>：</td>
+            <td align="left" style="padding: 9px 15px 9px 0px;">
+                <input type="text" id="payPerson" autocomplete="off" class="layui-input" placeholder="请输入">
+            </td>
+        </tr>
+        <tr>
+            <td align="right" style="padding: 9px 0px 9px 0px;">收款金额：</td>
+            <td align="left" style="padding: 9px 15px 9px 0px;">
+                <input type="text" id="payQuota" onblur="if(value=='')execCommand('undo')"
+                       Onkeyup="if(isNaN(value))execCommand('undo')" Onpaste="return false;" autocomplete="off"
+                       class="layui-input" placeholder="请输入">
+            </td>
+        </tr>
+        <tr>
+            <td align="right" style="padding: 9px 0px 9px 0px;">收款日期：</td>
+            <td align="left" style="padding: 9px 15px 9px 0px;">
+                <input type="text" id="payDate" autocomplete="off" class="layui-input"
+                       placeholder="请选择日期">
+            </td>
+        </tr>
+        <tr>
+            <td align="right" style="padding: 9px 0px 9px 0px;"><label style="letter-spacing:2em;margin-right:-2em;">备注</label>：</td>
+            <td align="left" style="padding: 9px 15px 9px 0px;">
+                <textarea id="remarkDescription" rows="10" autocomplete="off" class="layui-textarea"
+                          placeholder="请输入..."></textarea>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>

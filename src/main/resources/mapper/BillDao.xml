@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyjd.kh.dao.BillDao">
+
+    <sql id="base">
+         a.id, a.projectID,a.billType,a.billQuota,a.billDate,a.remarkDescription,
+         b.id as project_ID,b.customerID,b.signDate,b.projectNumber,b.projectType,b.projectName,b.projectAddress,
+         b.projectDescription,b.projectPerson,b.projectStartDate,b.projectFinalDate,b.projectCycle,
+         b.projectPrice,b.projectArea,b.projectDelay,b.projectBudget,b.projectCost,b.projectIncome,b.projectInQuota,b.projectBadQuota,
+         b.projectUnQuota,b.deadLineDate,b.projectPayState,b.remarkDescription as project_remarkDescription,b.projectRemindDays,b.hasBill,b.hasApplyBill,
+         c.id as customer_ID,c.customerName,c.customerPerson,c.customerPhone,c.customerAddress,c.customerLevel,c.createDate,
+         c.remarkDescription as customer_remarkDescription
+    </sql>
+
+    <resultMap type="com.zyjd.kh.model.Bill" id="res">
+		<id property="id" column="id"/>
+		<result property="projectID" column="projectID"/>
+		<result property="billType" column="billType"/>
+		<result property="billQuota" column="billQuota"/>
+		<result property="billDate" column="billDate"/>
+		<result property="remarkDescription" column="remarkDescription"/>
+		<association property="project" javaType="Project">
+			<id property="id" column="project_ID"/>
+			<result property="customerID" column="customerID"/>
+			<result property="signDate" column="signDate"/>
+			<result property="projectNumber" column="projectNumber"/>
+			<result property="projectType" column="projectType"/>
+			<result property="projectName" column="projectName"/>
+			<result property="projectAddress" column="projectAddress"/>
+			<result property="projectDescription" column="projectDescription"/>
+			<result property="projectPerson" column="projectPerson"/>
+			<result property="projectStartDate" column="projectStartDate"/>
+			<result property="projectFinalDate" column="projectFinalDate"/>
+			<result property="projectCycle" column="projectCycle"/>
+			<result property="projectPrice" column="projectPrice"/>
+			<result property="projectArea" column="projectArea"/>
+			<result property="projectDelay" column="projectDelay"/>
+			<result property="projectBudget" column="projectBudget"/>
+			<result property="projectCost" column="projectCost"/>
+			<result property="projectIncome" column="projectIncome"/>
+			<result property="projectInQuota" column="projectInQuota"/>
+			<result property="projectBadQuota" column="projectBadQuota" />
+			<result property="projectUnQuota" column="projectUnQuota"/>
+			<result property="deadLineDate" column="deadLineDate"/>
+			<result property="projectPayState" column="projectPayState"/>
+			<result property="remarkDescription" column="project_remarkDescription"/>
+			<result property="projectRemindDays" column="projectRemindDays"/>
+			<result property="hasBill" column="hasBill" />
+			<result property="hasApplyBill" column="hasApplyBill" />
+			<association property="customer" javaType="Customer">
+				<id property="id" column="customer_ID"/>
+				<result property="customerName" column="customerName"/>
+				<result property="customerPerson" column="customerPerson"/>
+				<result property="customerPhone" column="customerPhone"/>
+				<result property="customerAddress" column="customerAddress"/>
+				<result property="customerLevel" column="customerLevel"/>
+				<result property="createDate" column="createDate"/>
+				<result property="remarkDescription" column="customer_remarkDescription"/>
+			</association>
+		</association>
+	</resultMap>
+
+	<insert id="add" parameterType="Bill" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		insert into bill
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="projectID != null">
+				projectID,
+			</if>
+			<if test="billType != null">
+				billType,
+			</if>
+			<if test="billQuota != null">
+				billQuota,
+			</if>
+			<if test="billDate != null">
+				billDate,
+			</if>
+			<if test="remarkDescription != null">
+				remarkDescription,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="projectID != null">
+				#{projectID},
+			</if>
+			<if test="billType != null">
+				#{billType},
+			</if>
+			<if test="billQuota != null">
+				#{billQuota},
+			</if>
+			<if test="billDate != null">
+				#{billDate},
+			</if>
+			<if test="remarkDescription != null">
+				#{remarkDescription},
+			</if>
+		</trim>
+	</insert>
+
+	<delete id="delete" parameterType="int">
+		delete from bill where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="Bill">
+		update bill
+		<set>
+			<if test="billType != null">
+				billType = #{billType},
+			</if>
+		    <if test="billQuota != null">
+				billQuota = #{billQuota},
+			</if>
+			<if test="billDate != null">
+				billDate = #{billDate},
+			</if>
+			<if test="remarkDescription != null">
+                remarkDescription = #{remarkDescription},
+            </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="findById" parameterType="int" resultMap="res">
+		select <include refid="base" /> from bill as a left join project as b on a.projectID = b.id left join customer as c on b.customerID = c.id where a.id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="res">
+		select <include refid="base" /> from bill as a left join project as b on a.projectID = b.id left join customer as c on b.customerID = c.id
+	</select>
+
+	<select id="findByCondition" parameterType="Bill" resultMap="res">
+		select <include refid="base" /> from bill as a left join project as b on a.projectID = b.id left join customer as c on b.customerID = c.id
+		<where>
+			<if test="projectID != null">
+				and a.projectID = #{projectID}
+			</if>
+			<!--模糊查询-->
+			<if test="searchString != null">
+				and (a.billType like concat(concat('%', #{searchString}), '%')
+				or a.remarkDescription like concat(concat('%', #{searchString}), '%')
+				or b.projectNumber like concat(concat('%', #{searchString}), '%')
+				or b.projectType like concat(concat('%', #{searchString}), '%')
+				or b.projectName like concat(concat('%', #{searchString}), '%')
+				or b.projectAddress like concat(concat('%', #{searchString}), '%')
+				or b.projectPerson like concat(concat('%', #{searchString}), '%')
+				or b.projectPayState like concat(concat('%', #{searchString}), '%')
+				or c.customerName like concat(concat('%', #{searchString}), '%'))
+			</if>
+			<if test="timeStart != null and timeFinal!=null">
+				and a.billDate between #{timeStart} and #{timeFinal}
+			</if>
+			<if test="timeStart != null and timeFinal==null">
+				and (year(a.billDate) = year(#{timeStart}) and month(a.billDate) = month(#{timeStart}) and day(a.billDate) = day(#{timeStart}))
+			</if>
+			<if test="timeStart == null and timeFinal!=null">
+				and (year(a.billDate) = year(#{timeFinal}) and month(a.billDate) = month(#{timeFinal}) and day(a.billDate) = day(#{timeFinal}))
+			</if>
+		</where>
+	</select>
+
+	<select id="findByConditions" parameterType="Bill" resultMap="res">
+		select <include refid="base" /> from bill as a left join project as b on a.projectID = b.id left join customer as c on b.customerID = c.id
+		<where>
+			<if test="projectID != null">
+				and a.projectID = #{projectID}
+			</if>
+			<if test="billType != null">
+				and a.billType = #{billType}
+			</if>
+		</where>
+	</select>
+
+	<select id="findByConditionPage" parameterType="Bill" resultMap="res">
+		select <include refid="base" /> from bill as a left join project as b on a.projectID = b.id left join customer as c on b.customerID = c.id
+		<where>
+			<if test="projectID != null">
+				and a.projectID = #{projectID}
+			</if>
+			<!--模糊查询-->
+			<if test="searchString != null">
+				and (a.billType like concat(concat('%', #{searchString}), '%')
+				or a.remarkDescription like concat(concat('%', #{searchString}), '%')
+				or b.projectNumber like concat(concat('%', #{searchString}), '%')
+				or b.projectType like concat(concat('%', #{searchString}), '%')
+				or b.projectName like concat(concat('%', #{searchString}), '%')
+				or b.projectAddress like concat(concat('%', #{searchString}), '%')
+				or b.projectPerson like concat(concat('%', #{searchString}), '%')
+				or b.projectPayState like concat(concat('%', #{searchString}), '%')
+				or c.customerName like concat(concat('%', #{searchString}), '%'))
+			</if>
+			<if test="timeStart != null and timeFinal!=null">
+				and a.billDate between #{timeStart} and #{timeFinal}
+			</if>
+			<if test="timeStart != null and timeFinal==null">
+				and (year(a.billDate) = year(#{timeStart}) and month(a.billDate) = month(#{timeStart}) and day(a.billDate) = day(#{timeStart}))
+			</if>
+			<if test="timeStart == null and timeFinal!=null">
+				and (year(a.billDate) = year(#{timeFinal}) and month(a.billDate) = month(#{timeFinal}) and day(a.billDate) = day(#{timeFinal}))
+			</if>
+		</where>
+		<if test="start !=null and limit != null">
+			order by a.id limit #{start},#{limit}
+		</if>
+	</select>
+
+	<select id="findBillByCondition" parameterType="Bill" resultType="Double">
+		select sum(billQuota) from bill
+		<where>
+			<if test="projectID != null">
+				and projectID = #{projectID}
+			</if>
+		</where>
+	</select>
+
+</mapper>

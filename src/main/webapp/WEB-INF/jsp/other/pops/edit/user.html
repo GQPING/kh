@@ -1,0 +1,45 @@
+<form class="layui-form">
+    <table class="layui-table layui-xs" lay-skin="nob">
+        <colgroup>
+            <col width="5%" style="min-width: 60px;max-width: 60px;">
+            <col>
+        </colgroup>
+        <tbody>
+        <tr>
+            <td align="right" style="padding: 9px 0px 9px 0px;"><span style="color:red;">*</span>昵称：</td>
+            <td align="left" style="padding: 9px 15px 9px 0px;">
+                <input type="text" id="nickName" autocomplete="off" class="layui-input"
+                       placeholder="请输入">
+            </td>
+        </tr>
+        <tr>
+            <td align="right" style="padding: 9px 0px 9px 0px;"><span style="color:red;">*</span>密码：</td>
+            <td align="left" style="padding: 9px 15px 9px 0px;">
+                <input type="text" id="password" autocomplete="off" class="layui-input"
+                       placeholder="请输入">
+            </td>
+        </tr>
+        <tr>
+            <td align="right" style="padding: 9px 0px 9px 0px;"><span style="color:red;">*</span>姓名：</td>
+            <td align="left" style="padding: 9px 15px 9px 0px;">
+                <input type="text" id="userName" autocomplete="off" class="layui-input"
+                       placeholder="请输入">
+            </td>
+        </tr>
+        <tr>
+            <td align="right" style="padding: 9px 0px 9px 0px;"><span style="color:red;">*</span>角色：</td>
+            <td align="left" style="padding: 9px 15px 9px 0px;">
+                <select id="roleID" lay-filter="roleID" lay-search>
+                    <option value="">请选择</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td align="right" style="padding: 9px 0px 9px 0px;">备注：</td>
+            <td align="left" style="padding: 9px 15px 9px 0px;">
+                <textarea id="remarkDescription" rows="10" autocomplete="off" class="layui-textarea" placeholder="请输入..."></textarea>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>

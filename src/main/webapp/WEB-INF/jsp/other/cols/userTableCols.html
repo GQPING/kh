@@ -1,0 +1,21 @@
+<script type="text/html" id="idTpl">
+    <span data-d="{{d.id}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.id}}</span>
+</script>
+<script type="text/html" id="nickNameTpl">
+    <span data-d="{{MD5(d.nickName)}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.nickName}}</span>
+</script>
+<script type="text/html" id="passwordTpl">
+    <span data-d="{{MD5(d.password)}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{MD5(d.password)}}</span>
+</script>
+<script type="text/html" id="userNameTpl">
+    <span data-d="{{d.userName}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.userName}}</span>
+</script>
+<script type="text/html" id="roleNameTpl">
+    <span data-d="{{d.role.roleName}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.role.roleName}}</span>
+</script>
+<script type="text/html" id="remarkDescriptionTpl">
+    <span data-d="{{d.remarkDescription}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.remarkDescription}}</span>
+</script>
+<script type="text/html" id="createDateTpl">
+    <span data-d="{{layui.util.toDateString(d.createDate, 'yyyy-MM-dd HH:mm:ss')}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{layui.util.toDateString(d.createDate, 'yyyy-MM-dd HH:mm:ss')}}</span>
+</script>

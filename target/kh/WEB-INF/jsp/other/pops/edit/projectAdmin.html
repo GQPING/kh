@@ -1,0 +1,205 @@
+<div id="bjnrEdit" style="display: none;">
+    <form class="layui-form" id="form-validate">
+        <table class="layui-table layui-xs" lay-skin="nob">
+            <colgroup>
+                <col width="7%">
+                <col width="25%">
+                <col width="7%">
+                <col width="27%">
+                <col width="7%">
+                <col width="27%">
+            </colgroup>
+            <tbody>
+            <tr>
+                <td align="right">项目编号：</td>
+                <td align="left">
+                    <input type="text" id="projectNumber" autocomplete="off" class="layui-input" placeholder="请输入" Onkeyup="this.value=this.value.replace(/[^\a-\z\A-\Z0-9]/g,'')">
+                </td>
+                <td align="right">项目名称：</td>
+                <td align="left">
+                    <input type="text" id="projectName" autocomplete="off" class="layui-input" placeholder="请输入">
+                </td>
+                <td align="right">项目地址：</td>
+                <td align="left">
+                    <input type="text" id="projectAddress" autocomplete="off" class="layui-input" placeholder="请输入">
+                </td>
+            </tr>
+            <tr>
+                <td align="right">签订日期：</td>
+                <td align="left">
+                    <input type="text" id="signDate" autocomplete="off" class="layui-input" placeholder="请选择">
+                </td>
+                <td align="right">项目类型：</td>
+                <td align="left">
+                    <select class="layui-input" id="projectType" lay-filter="projectType">
+                        <option value="">请选择</option>
+                        <option value="全包">全包</option>
+                        <option value="按平方" selected>按平方</option>
+                    </select>
+                </td>
+                <td align="right">项目客户：</td>
+                <td align="left">
+                    <select class="layui-input" id="customerID" lay-filter="customerID" lay-search>
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">项目联系：</td>
+                <td align="left">
+                    <input type="text" id="contactName" autocomplete="off" class="layui-input" placeholder="请输入">
+                </td>
+                <td align="right">联系电话：</td>
+                <td align="left">
+                    <input type="text" id="contactPhone" autocomplete="off" class="layui-input" placeholder="请输入">
+                </td>
+                <td align="right">项目负责：</td>
+                <td align="left">
+                    <select class="layui-input" id="projectPerson" lay-filter="projectPerson">
+                        <option value="">请选择</option>
+                        <option value="王凯">王凯</option>
+                        <option value="杨俊超">杨俊超</option>
+                        <option value="赵建党">赵建党</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">进场日期：</td>
+                <td align="left">
+                    <input type="text" id="projectStartDate" autocomplete="off" class="layui-input"
+                           placeholder="请选择">
+                </td>
+                <td align="right">完工日期：</td>
+                <td align="left">
+                    <input type="text" id="projectFinalDate" autocomplete="off" class="layui-input"
+                           placeholder="请选择">
+                </td>
+                <td align="right">截止日期：</td>
+                <td align="left">
+                    <input type="text" id="deadLineDate" autocomplete="off" class="layui-input"
+                           placeholder="请选择">
+                </td>
+            </tr>
+            <tr>
+                <td align="right">开荒面积：</td>
+                <td align="left">
+                    <input type="text" id="projectArea" value="0" oninput="PriceChange()" onblur="if(value=='')execCommand('undo')" autocomplete="off" class="layui-input" Onkeyup="if(isNaN(value))execCommand('undo')" Onpaste="return false;" placeholder="请输入">
+                </td>
+                <td align="right">开荒单价：</td>
+                <td align="left">
+                    <input type="text" id="projectPrice" value="0" oninput="PriceChange()" onblur="if(value=='')execCommand('undo')" autocomplete="off" class="layui-input" Onkeyup="if(isNaN(value))execCommand('undo')" Onpaste="return false;" placeholder="请输入">
+                </td>
+                <td align="right">应收款项：</td>
+                <td align="left">
+                    <input type="text" id="projectBudget" value="0" oninput="BudgetChange()" onblur="if(value=='')execCommand('undo')" autocomplete="off" class="layui-input" Onkeyup="if(isNaN(value))execCommand('undo')" Onpaste="return false;" placeholder="请输入">
+                </td>
+            </tr>
+            <tr>
+                <td align="right">滞纳金额：</td>
+                <td align="left">
+                    <input type="text" id="projectDelay" value="0" oninput="DelayChange()" onblur="if(value=='')execCommand('undo')" autocomplete="off" class="layui-input" Onkeyup="if(isNaN(value))execCommand('undo')" Onpaste="return false;" placeholder="请输入">
+                </td>
+                <td align="right">项目预算：</td>
+                <td align="left">
+                    <input type="text" id="projectCost" value="0" oninput="CostChange()" onblur="if(value=='')execCommand('undo')" autocomplete="off" class="layui-input" Onkeyup="if(isNaN(value))execCommand('undo')" Onpaste="return false;" placeholder="请输入">
+                </td>
+                <td align="right">项目坏账：</td>
+                <td align="left">
+                    <input type="text" id="projectBadQuota" value="0" oninput="BadQuotaChange()" onblur="if(value=='')execCommand('undo')" Onkeyup="if(isNaN(value))execCommand('undo')" Onpaste="return false;" autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td align="right">设置提醒：</td>
+                <td align="left" colspan="5">
+                    <select class="layui-input" id="projectRemindDays" lay-filter="projectRemindDays">
+                        <option value="">请选择</option>
+                        <option value="3">3天到期提醒</option>
+                        <option value="7">7天到期提醒</option>
+                        <option value="15">15天到期提醒</option>
+                        <option value="30">30天到期提醒</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">项目概况：</td>
+                <td align="left" colspan="5">
+                    <input type="text" id="projectDescription" autocomplete="off" class="layui-input" placeholder="请输入...">
+                </td>
+            </tr>
+            <tr>
+                <td align="right">项目备注：</td>
+                <td align="left" colspan="5">
+                    <textarea rows="5" id="remarkDescription" autocomplete="off" class="layui-textarea" placeholder="请输入..."></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">项目周期：</td>
+                <td align="left" colspan="5">
+                    <input type="text" id="projectCycle" autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td align="right">项目回款：</td>
+                <td align="left" colspan="5">
+                    <input type="text" id="projectInQuota" value="0" autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td align="right">项目余款：</td>
+                <td align="left" colspan="5">
+                    <input type="text" id="projectUnQuota" value="0" autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td align="right">项目收入：</td>
+                <td align="left" colspan="5">
+                    <input type="text" id="projectIncome" value="0" autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td align="right">回款状态：</td>
+                <td align="left" colspan="5">
+                    <input type="text" id="projectPayState" value="" autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div id="bjnrContact" style="display: none;">
+    <form class="layui-form">
+        <table class="layui-table layui-xs" lay-skin="nob">
+            <colgroup>
+                <col width="7%" style="min-width: 90px;max-width: 90px;">
+                <col>
+            </colgroup>
+            <tbody>
+            <tr>
+                <td align="right" style="padding: 9px 0px 9px 0px;">所属项目：</td>
+                <td align="left" style="padding: 9px 15px 9px 0px;">
+                    <input type="text" id="contact_projectName" autocomplete="off" class="layui-input layui-btn-disabled" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="padding: 9px 0px 9px 0px;"><label style="letter-spacing:0.5em;margin-right:-0.5em;">联系人</label>：</td>
+                <td align="left" style="padding: 9px 15px 9px 0px;">
+                    <input type="text" id="contact_contactName" autocomplete="off" placeholder="请输入" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="padding: 9px 0px 9px 0px;">联系电话：</td>
+                <td align="left" style="padding: 9px 15px 9px 0px;">
+                    <input type="text" id="contact_contactPhone" autocomplete="off" placeholder="请输入" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="padding: 9px 0px 9px 0px;"><label style="letter-spacing:2em;margin-right:-2em;">备注</label>：</td>
+                <td align="left" style="padding: 9px 15px 9px 0px;">
+                <textarea id="contact_remarkDescription" rows="10" autocomplete="off" class="layui-textarea"
+                          placeholder="请输入..."></textarea>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>

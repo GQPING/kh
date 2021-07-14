@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyjd.kh.dao.CashingDao">
+
+    <sql id="base">
+         a.id,a.projectID,a.payType,a.payPerson,a.payQuota,a.payDate,a.remarkDescription,
+         b.id as project_ID,b.customerID,b.signDate,b.projectNumber,b.projectType,b.projectName,b.projectAddress,
+         b.projectDescription,b.projectPerson,b.projectStartDate,b.projectFinalDate,b.projectCycle,
+         b.projectPrice,b.projectArea,b.projectDelay,b.projectBudget,b.projectCost,b.projectIncome,b.projectInQuota,b.projectBadQuota,
+         b.projectUnQuota,b.deadLineDate,b.projectPayState,b.remarkDescription as project_remarkDescription,b.projectRemindDays,b.hasBill,b.hasApplyBill,
+         c.id as customer_ID,c.customerName,c.customerPerson,c.customerPhone,c.customerAddress,c.customerLevel,c.createDate,
+         c.remarkDescription as customer_remarkDescription
+    </sql>
+
+    <resultMap type="com.zyjd.kh.model.Cashing" id="res">
+         <id property="id" column="id"/>
+         <result property="projectID" column="projectID"/>
+		 <result property="payType" column="payType"/>
+		 <result property="payPerson" column="payPerson"/>
+         <result property="payQuota" column="payQuota"/>
+         <result property="payDate" column="payDate"/> 
+         <result property="remarkDescription" column="remarkDescription" />
+         <association property="project" javaType="Project">
+			 <id property="id" column="project_ID" />
+			 <result property="customerID" column="customerID" />
+			 <result property="signDate" column="signDate" />
+			 <result property="projectNumber" column="projectNumber" />
+			 <result property="projectType" column="projectType" />
+			 <result property="projectName" column="projectName" />
+			 <result property="projectAddress" column="projectAddress" />
+			 <result property="projectDescription" column="projectDescription" />
+			 <result property="projectPerson" column="projectPerson" />
+			 <result property="projectStartDate" column="projectStartDate" />
+			 <result property="projectFinalDate" column="projectFinalDate" />
+			 <result property="projectCycle" column="projectCycle" />
+			 <result property="projectPrice" column="projectPrice" />
+			 <result property="projectArea" column="projectArea" />
+			 <result property="projectDelay" column="projectDelay"/>
+			 <result property="projectBudget" column="projectBudget" />
+			 <result property="projectCost" column="projectCost" />
+			 <result property="projectIncome" column="projectIncome" />
+			 <result property="projectInQuota" column="projectInQuota" />
+			 <result property="projectBadQuota" column="projectBadQuota" />
+			 <result property="projectUnQuota" column="projectUnQuota" />
+			 <result property="deadLineDate" column="deadLineDate" />
+			 <result property="projectPayState" column="projectPayState" />
+			 <result property="remarkDescription" column="project_remarkDescription" />
+			 <result property="projectRemindDays" column="projectRemindDays" />
+			 <result property="hasBill" column="hasBill" />
+			 <result property="hasApplyBill" column="hasApplyBill" />
+	         <association property="customer" javaType="Customer">
+				 <id property="id" column="customer_ID"/>
+				 <result property="customerName" column="customerName"/>
+				 <result property="customerPerson" column="customerPerson"/>
+				 <result property="customerPhone" column="customerPhone"/>
+				 <result property="customerAddress" column="customerAddress"/>
+				 <result property="customerLevel" column="customerLevel"/>
+				 <result property="createDate" column="createDate"/>
+				 <result property="remarkDescription" column="customer_remarkDescription" />
+             </association>
+         </association>   
+    </resultMap>
+
+    <insert id="add" parameterType="Cashing" useGeneratedKeys="true" keyProperty="id"  keyColumn="id">
+         insert into cashing
+         <trim prefix="(" suffix=")" suffixOverrides=",">
+			 <if test="id != null">
+				 id,
+			 </if>
+			 <if test="projectID != null">
+				 projectID,
+			 </if>
+			 <if test="payType != null">
+				 payType,
+			 </if>
+			 <if test="payPerson != null">
+				 payPerson,
+			 </if>
+			 <if test="payQuota != null">
+				 payQuota,
+			 </if>
+			 <if test="payDate != null">
+				 payDate,
+			 </if>
+			 <if test="remarkDescription != null">
+				 remarkDescription,
+			 </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+			<if test="projectID != null">
+				#{projectID},
+			</if>
+			<if test="payType != null">
+				#{payType},
+			</if>
+			<if test="payPerson != null">
+				#{payPerson},
+			</if>
+            <if test="payQuota != null">
+                #{payQuota},
+            </if>
+            <if test="payDate != null">
+                #{payDate},
+            </if>
+            <if test="remarkDescription != null">
+                #{remarkDescription},
+            </if>
+        </trim>
+    </insert>
+
+	<delete id="delete" parameterType="int">
+		delete from cashing where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="Cashing">
+		update cashing
+		<set>
+			<if test="payType != null">
+				payType = #{payType},
+			</if>
+			<if test="payPerson != null">
+				payPerson = #{payPerson},
+			</if>
+		    <if test="payQuota != null">
+				payQuota = #{payQuota},
+			</if>
+			<if test="payDate != null">
+				payDate = #{payDate},
+			</if>
+			<if test="remarkDescription != null">
+                remarkDescription = #{remarkDescription},
+            </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="findById" parameterType="int" resultMap="res">
+		select <include refid="base" /> from cashing as a left join project as b on a.projectID = b.id left join customer as c on b.customerID = c.id where a.id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="res">
+		select <include refid="base" /> from cashing as a left join project as b on a.projectID = b.id left join customer as c on b.customerID = c.id
+	</select>
+
+	<select id="findByCondition" parameterType="Cashing" resultMap="res">
+		select <include refid="base" /> from cashing as a left join project as b on a.projectID = b.id left join customer as c on b.customerID = c.id
+		<where>
+			<if test="projectID != null">
+				and a.projectID = #{projectID}
+			</if>
+			<!--模糊查询-->
+			<if test="searchString != null">
+				and (a.payType like concat(concat('%', #{searchString}), '%')
+				or a.payPerson like concat(concat('%', #{searchString}), '%')
+				or a.remarkDescription like concat(concat('%', #{searchString}), '%')
+				or b.projectNumber like concat(concat('%', #{searchString}), '%')
+				or b.projectType like concat(concat('%', #{searchString}), '%')
+				or b.projectName like concat(concat('%', #{searchString}), '%')
+				or b.projectAddress like concat(concat('%', #{searchString}), '%')
+				or b.projectPerson like concat(concat('%', #{searchString}), '%')
+				or b.projectPayState like concat(concat('%', #{searchString}), '%')
+				or c.customerName like concat(concat('%', #{searchString}), '%'))
+			</if>
+			<if test="timeStart != null and timeFinal!=null">
+				and a.payDate between #{timeStart} and #{timeFinal}
+			</if>
+			<if test="timeStart != null and timeFinal==null">
+				and (year(a.payDate) = year(#{timeStart}) and month(a.payDate) = month(#{timeStart}) and day(a.payDate) = day(#{timeStart}))
+			</if>
+			<if test="timeStart == null and timeFinal!=null">
+				and (year(a.payDate) = year(#{timeFinal}) and month(a.payDate) = month(#{timeFinal}) and day(a.payDate) = day(#{timeFinal}))
+			</if>
+		</where>
+	</select>
+
+	<select id="findByConditions" parameterType="Cashing" resultMap="res">
+		select <include refid="base" /> from cashing as a left join project as b on a.projectID = b.id left join customer as c on b.customerID = c.id
+		<where>
+			<if test="projectID != null">
+				and a.projectID = #{projectID}
+			</if>
+			<if test="payType != null">
+				and a.payType = #{payType}
+			</if>
+			<if test="payPerson != null">
+				and a.payPerson = #{payPerson}
+			</if>
+		</where>
+	</select>
+
+	<select id="findByConditionPage" parameterType="Cashing" resultMap="res">
+		select <include refid="base" /> from cashing as a left join project as b on a.projectID = b.id left join customer as c on b.customerID = c.id
+		<where>
+			<if test="projectID != null">
+				and a.projectID = #{projectID}
+			</if>
+			<!--模糊查询-->
+			<if test="searchString != null">
+				and (a.payType like concat(concat('%', #{searchString}), '%')
+				or a.payPerson like concat(concat('%', #{searchString}), '%')
+				or a.remarkDescription like concat(concat('%', #{searchString}), '%')
+				or b.projectNumber like concat(concat('%', #{searchString}), '%')
+				or b.projectType like concat(concat('%', #{searchString}), '%')
+				or b.projectName like concat(concat('%', #{searchString}), '%')
+				or b.projectAddress like concat(concat('%', #{searchString}), '%')
+				or b.projectPerson like concat(concat('%', #{searchString}), '%')
+				or b.projectPayState like concat(concat('%', #{searchString}), '%')
+				or c.customerName like concat(concat('%', #{searchString}), '%'))
+			</if>
+			<if test="timeStart != null and timeFinal!=null">
+				and a.payDate between #{timeStart} and #{timeFinal}
+			</if>
+			<if test="timeStart != null and timeFinal==null">
+				and (year(a.payDate) = year(#{timeStart}) and month(a.payDate) = month(#{timeStart}) and day(a.payDate) = day(#{timeStart}))
+			</if>
+			<if test="timeStart == null and timeFinal!=null">
+				and (year(a.payDate) = year(#{timeFinal}) and month(a.payDate) = month(#{timeFinal}) and day(a.payDate) = day(#{timeFinal}))
+			</if>
+		</where>
+		<if test="start !=null and limit != null">
+			order by a.id limit #{start},#{limit}
+		</if>
+	</select>
+
+	<select id="findCashByCondition" parameterType="Cashing" resultType="Double">
+		select sum(payQuota) from cashing
+		<where>
+		    <if test="projectID != null">
+				and projectID = #{projectID}
+			</if>
+			<if test="isToday != null">
+				and year(payDate) = year(now())
+				and month(payDate) = month(now())
+				and day(payDate) = day(now())
+			</if>
+		</where>
+	</select>
+
+</mapper>

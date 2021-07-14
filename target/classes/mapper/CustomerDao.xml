@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyjd.kh.dao.CustomerDao">
+	<sql id="base">
+         a.id,a.customerName,a.customerPerson,a.customerPhone,a.customerAddress,a.customerLevel,a.createDate,a.remarkDescription,
+         b.id as project_ID,b.customerID,b.signDate,b.projectNumber,b.projectType,b.projectName,b.projectAddress,b.projectDescription,
+         b.projectPerson,b.projectStartDate,b.projectFinalDate,b.projectCycle,b.projectPrice,b.projectArea,b.projectDelay,
+         b.projectBudget,b.projectCost,b.projectIncome,b.projectInQuota,b.projectBadQuota,b.projectUnQuota,
+         b.deadLineDate,b.projectPayState,b.remarkDescription as project_remarkDescription,b.projectRemindDays,b.hasBill,b.hasApplyBill
+    </sql>
+	<resultMap type="com.zyjd.kh.model.Customer" id="res">
+		<id property="id" column="id"/>
+		<result property="customerName" column="customerName"/>
+		<result property="customerPerson" column="customerPerson"/>
+		<result property="customerPhone" column="customerPhone"/>
+		<result property="customerAddress" column="customerAddress"/>
+		<result property="customerLevel" column="customerLevel"/>
+		<result property="createDate" column="createDate"/>
+		<result property="remarkDescription" column="remarkDescription" />
+		<collection property="projects" ofType="Project">
+			<id property="id" column="project_ID" />
+			<result property="customerID" column="customerID" />
+			<result property="signDate" column="signDate" />
+			<result property="projectNumber" column="projectNumber" />
+			<result property="projectType" column="projectType" />
+			<result property="projectName" column="projectName" />
+			<result property="projectAddress" column="projectAddress" />
+			<result property="projectDescription" column="projectDescription" />
+			<result property="projectPerson" column="projectPerson" />
+			<result property="projectStartDate" column="projectStartDate" />
+			<result property="projectFinalDate" column="projectFinalDate" />
+			<result property="projectCycle" column="projectCycle" />
+			<result property="projectPrice" column="projectPrice" />
+			<result property="projectArea" column="projectArea" />
+			<result property="projectDelay" column="projectDelay" />
+			<result property="projectBudget" column="projectBudget" />
+			<result property="projectCost" column="projectCost" />
+			<result property="projectIncome" column="projectIncome" />
+			<result property="projectInQuota" column="projectInQuota" />
+			<result property="projectBadQuota" column="projectBadQuota" />
+			<result property="projectUnQuota" column="projectUnQuota" />
+			<result property="deadLineDate" column="deadLineDate" />
+			<result property="projectPayState" column="projectPayState" />
+			<result property="remarkDescription" column="project_remarkDescription" />
+			<result property="projectRemindDays" column="projectRemindDays" />
+			<result property="hasBill" column="hasBill" />
+			<result property="hasApplyBill" column="hasApplyBill" />
+		</collection>
+	</resultMap>
+
+	<insert id="add" parameterType="Customer" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		insert into customer
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="customerName != null">
+				customerName,
+			</if>
+			<if test="customerPerson != null">
+				customerPerson,
+			</if>
+			<if test="customerPhone != null">
+				customerPhone,
+			</if>
+			<if test="customerAddress != null">
+				customerAddress,
+			</if>
+			<if test="customerLevel != null">
+				customerLevel,
+			</if>
+			<if test="createDate != null">
+				createDate,
+			</if>
+			<if test="remarkDescription != null">
+				remarkDescription,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="customerName != null">
+				#{customerName},
+			</if>
+			<if test="customerPerson != null">
+				#{customerPerson},
+			</if>
+			<if test="customerPhone != null">
+				#{customerPhone},
+			</if>
+			<if test="customerAddress != null">
+				#{customerAddress},
+			</if>
+			<if test="customerLevel != null">
+				#{customerLevel},
+			</if>
+			<if test="createDate != null">
+				#{createDate},
+			</if>
+			<if test="remarkDescription != null">
+				#{remarkDescription},
+			</if>
+		</trim>
+	</insert>
+
+	<delete id="delete" parameterType="int">
+		delete from customer where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="Customer">
+		update customer
+		<set>
+			<if test="customerName != null">
+				customerName = #{customerName},
+			</if>
+			<if test="customerPerson != null">
+				customerPerson = #{customerPerson},
+			</if>
+			<if test="customerPhone != null">
+				customerPhone = #{customerPhone},
+			</if>
+			<if test="customerAddress != null">
+				customerAddress = #{customerAddress},
+			</if>
+			<if test="customerLevel != null">
+				customerLevel = #{customerLevel},
+			</if>
+			<if test="remarkDescription != null">
+                remarkDescription = #{remarkDescription},
+            </if>		
+		</set>
+		where id = #{id}
+	</update>
+
+    <select id="findById" parameterType="int" resultMap="res">
+		select <include refid="base" /> from customer as a left join project as b on a.id = b.customerID where a.id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="res">
+		select <include refid="base" /> from customer as a left join project  as b on a.id = b.customerID order by a.createDate DESC
+	</select>
+
+	<select id="findByCondition" parameterType="Customer" resultMap="res">
+		select <include refid="base" /> from customer as a left join project  as b on a.id = b.customerID
+		<where>
+			<!--模糊查询-->
+			<if test="searchString != null">
+				and (a.customerName like concat(concat('%', #{searchString}), '%')
+				or a.customerPerson like concat(concat('%', #{searchString}), '%')
+				or a.customerPhone like concat(concat('%', #{searchString}), '%')
+				or a.customerAddress like concat(concat('%', #{searchString}), '%'))
+			</if>
+			<if test="timeStart != null and timeFinal!=null">
+			    and a.createDate between #{timeStart} and #{timeFinal}
+			</if>
+			<if test="timeStart != null and timeFinal==null">
+				and (year(a.createDate) = year(#{timeStart}) and month(a.createDate) = month(#{timeStart}) and day(a.createDate) = day(#{timeStart}))
+			</if>
+			<if test="timeStart == null and timeFinal!=null">
+				and (year(a.createDate) = year(#{timeFinal}) and month(a.createDate) = month(#{timeFinal}) and day(a.createDate) = day(#{timeFinal}))
+			</if>	
+		</where>
+		order by a.createDate DESC
+	</select>
+
+	<select id="findByConditions" parameterType="Customer" resultMap="res">
+		select <include refid="base" /> from customer as a left join project  as b on a.id = b.customerID
+		<where>
+			<if test="customerName!=null">
+				and a.customerName = #{customerName}
+			</if>
+			<if test="customerPerson!=null">
+				and a.customerPerson = #{customerPerson}
+			</if>
+			<if test="customerPhone!=null">
+				and a.customerPhone = #{customerPhone}
+			</if>
+			<if test="customerAddress!=null">
+				and a.customerAddress = #{customerAddress}
+			</if>
+		</where>
+		order by a.createDate DESC
+	</select>
+
+	<select id="findByConditionPage" parameterType="Customer" resultMap="res">
+		select <include refid="base" /> from customer as a left join project  as b on a.id = b.customerID
+		<where>
+			<!--模糊查询-->
+			<if test="searchString != null">
+				and (a.customerName like concat(concat('%', #{searchString}), '%')
+				or a.customerPerson like concat(concat('%', #{searchString}), '%')
+				or a.customerPhone like concat(concat('%', #{searchString}), '%')
+				or a.customerAddress like concat(concat('%', #{searchString}), '%'))
+			</if>
+			<if test="timeStart != null and timeFinal!=null">
+				and a.createDate between #{timeStart} and #{timeFinal}
+			</if>
+			<if test="timeStart != null and timeFinal==null">
+				and (year(a.createDate) = year(#{timeStart}) and month(a.createDate) = month(#{timeStart}) and day(a.createDate) = day(#{timeStart}))
+			</if>
+			<if test="timeStart == null and timeFinal!=null">
+				and (year(a.createDate) = year(#{timeFinal}) and month(a.createDate) = month(#{timeFinal}) and day(a.createDate) = day(#{timeFinal}))
+			</if>
+		</where>
+		<if test="start !=null and limit != null">
+			order by a.createDate DESC,a.id limit #{start},#{limit}
+		</if>
+	</select>
+
+	<select id="findCountByCondition" parameterType="Customer" resultType="Integer">
+		select count(*) from customer
+		<where>
+			<if test="isToday != null">
+				and year(createDate) = year(now())
+				and month(createDate) = month(now())
+				and day(createDate) = day(now())
+			</if>
+		</where>
+	</select>
+
+</mapper>

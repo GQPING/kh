@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyjd.kh.dao.LogDao">
+
+    <sql id="base">
+          a.id, a.userID, a.operateType, a.operateDetail, a.logsIpAddress, a.createDate,
+          b.id as user_ID, b.nickName, b.password, b.userName, b.createDate as user_CreateDate, b.remarkDescription,
+          c.id as role_ID, c.roleName
+    </sql>
+
+    <resultMap type="com.zyjd.kh.model.Log" id="res">
+         <id property="id" column="id"/>
+         <result property="userID" column="userID"/>
+         <result property="operateType" column="operateType"/>
+         <result property="operateDetail" column="operateDetail"/>
+         <result property="logsIpAddress" column="logsIpAddress"/>
+         <result property="createDate" column="createDate"/>
+         <association property="user" javaType="User">
+             <id property="id" column="user_ID"/>
+             <result property="roleID" column="roleID"/>
+             <result property="nickName" column="nickName"/>
+             <result property="password" column="password"/>
+             <result property="userName" column="userName"/>
+             <result property="createDate" column="user_CreateDate"/>
+             <result property="remarkDescription" column="remarkDescription" />
+             <association property="role" javaType="Role">
+                 <id property="id" column="role_ID"/>
+                 <result property="roleName" column="roleName"/>
+             </association>
+         </association>
+    </resultMap>
+
+    <insert id="add" parameterType="Log" useGeneratedKeys="true" keyProperty="id"  keyColumn="id">
+         insert into log
+         <trim prefix="(" suffix=")" suffixOverrides=",">
+             <if test="id != null">
+                 id,
+             </if>
+             <if test="userID != null">
+                 userID,
+             </if>
+             <if test="operateType != null">
+                 operateType,
+             </if>
+             <if test="operateDetail != null">
+                 operateDetail,
+             </if>
+             <if test="logsIpAddress != null">
+                 logsIpAddress,
+             </if>
+             <if test="createDate != null">
+                 createDate,
+             </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="userID != null">
+                #{userID},
+            </if>
+            <if test="operateType != null">
+                #{operateType},
+            </if>
+            <if test="operateDetail != null">
+                #{operateDetail},
+            </if>
+            <if test="logsIpAddress != null">
+                #{logsIpAddress},
+            </if>
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+        </trim>
+    </insert>
+
+	<delete id="delete" parameterType="int">
+		delete from log where id = #{id}
+	</delete>
+	
+	<select id="findById" parameterType="int" resultMap="res">
+		select <include refid="base" /> from log as a left join user as b on a.userID = b.id left join role as c on b.roleID = c.id
+		where id = #{id}
+	</select>
+
+    <select id="findAll" resultMap="res">
+		select <include refid="base" /> from log as a left join user as b on a.userID = b.id left join role as c on b.roleID = c.id
+	</select>
+
+	<select id="findByCondition" parameterType="Log" resultMap="res">
+		select <include refid="base" /> from log as a left join user as b on a.userID = b.id left join role as c on b.roleID = c.id
+		<where>
+            <!--模糊查询-->
+            <if test="searchString != null">
+                and (b.nickName like concat(concat('%', #{searchString}), '%')
+                or b.userName like concat(concat('%', #{searchString}), '%')
+                or c.roleName like concat(concat('%', #{searchString}), '%')
+                or a.operateType like concat(concat('%', #{searchString}), '%')
+                or a.operateDetail like concat(concat('%', #{searchString}), '%')
+                or a.logsIpAddress like concat(concat('%', #{searchString}), '%'))
+            </if>
+            <if test="timeStart != null and timeFinal!=null">
+                and ((year(a.createDate) between year(#{timeStart}) and year(#{timeFinal}))
+                and (month(a.createDate) between month(#{timeStart}) and month(#{timeFinal}))
+                and (day(a.createDate) between day(#{timeStart}) and day(#{timeFinal})))
+            </if>
+            <if test="timeStart != null and timeFinal==null">
+                and (year(a.createDate) = year(#{timeStart}) and month(a.createDate) = month(#{timeStart}) and day(a.createDate) = day(#{timeStart}))
+            </if>
+            <if test="timeStart == null and timeFinal!=null">
+                and (year(a.createDate) = year(#{timeFinal}) and month(a.createDate) = month(#{timeFinal}) and day(a.createDate) = day(#{timeFinal}))
+            </if>
+		</where>
+        order by a.createDate DESC
+	</select>
+
+    <select id="findByConditions" parameterType="Log" resultMap="res">
+        select <include refid="base" /> from log as a left join user as b on a.userID = b.id left join role as c on b.roleID = c.id
+        <where>
+            <if test="operateType != null">
+                and a.operateType = #{operateType}
+            </if>
+        </where>
+        order by a.createDate DESC
+    </select>
+
+    <select id="findByConditionPage" parameterType="Log" resultMap="res">
+        select <include refid="base" /> from log as a left join user as b on a.userID = b.id left join role as c on b.roleID = c.id
+        <where>
+            <!--模糊查询-->
+            <if test="searchString != null">
+                and (b.nickName like concat(concat('%', #{searchString}), '%')
+                or b.userName like concat(concat('%', #{searchString}), '%')
+                or c.roleName like concat(concat('%', #{searchString}), '%')
+                or a.operateType like concat(concat('%', #{searchString}), '%')
+                or a.operateDetail like concat(concat('%', #{searchString}), '%')
+                or a.logsIpAddress like concat(concat('%', #{searchString}), '%'))
+            </if>
+            <if test="timeStart != null and timeFinal!=null">
+                and ((year(a.createDate) between year(#{timeStart}) and year(#{timeFinal}))
+                and (month(a.createDate) between month(#{timeStart}) and month(#{timeFinal}))
+                and (day(a.createDate) between day(#{timeStart}) and day(#{timeFinal})))
+            </if>
+            <if test="timeStart != null and timeFinal==null">
+                and (year(a.createDate) = year(#{timeStart}) and month(a.createDate) = month(#{timeStart}) and day(a.createDate) = day(#{timeStart}))
+            </if>
+            <if test="timeStart == null and timeFinal!=null">
+                and (year(a.createDate) = year(#{timeFinal}) and month(a.createDate) = month(#{timeFinal}) and day(a.createDate) = day(#{timeFinal}))
+            </if>
+        </where>
+        <if test="start !=null and limit != null">
+            order by a.createDate DESC,a.id limit #{start},#{limit}
+        </if>
+    </select>
+
+</mapper>

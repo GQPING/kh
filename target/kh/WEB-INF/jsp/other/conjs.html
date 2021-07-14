@@ -1,0 +1,27 @@
+<script type="text/javascript" src="${ctx}/lib/jquery/3.5.1/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="${ctx}/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="${ctx}/lib/media/js/tk.js"></script>
+    <script type="text/javascript" src="${ctx}/lib/media/js/control.js"></script>
+    <script type="text/javascript" src="${ctx}/lib/media/js/clear.js"></script>
+    <script type="text/javascript" src="${ctx}/lib/media/js/read.js"></script>
+    <script type="text/javascript" src="${ctx}/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+    <script type="text/javascript" src="${ctx}/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+    <script type="text/javascript" src="${ctx}/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+    <script type="text/javascript">
+        // 权限控制
+        function permission(roleID,menuName){
+            // 权限
+            $.ajax({
+                url: '${pageContext.request.contextPath }/rolePermission/search',
+                method: 'post',
+                data: JSON.stringify({id:roleID,searchString:menuName}),
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (data) {
+                    operateControl(data);
+                }, error: function (data) {
+                    layer.msg('权限获取异常!', {icon: 5, time: 1000, anim: 6});
+                }
+            });
+        }
+    </script>

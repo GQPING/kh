@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyjd.kh.dao.RoleDao">
+
+    <sql id="base">
+         id, roleName, remarkDescription
+    </sql>
+
+    <resultMap type="com.zyjd.kh.model.Role" id="res">
+         <id property="id" column="id"/>
+         <result property="roleName" column="roleName"/>
+		 <result property="remarkDescription" column="remarkDescription" />
+	</resultMap>
+
+    <sql id="basep">
+         b.id, b.menuID, b.operateID, b.permissionName, b.permissionHref, b.remarkDescription,
+         c.id as menu_id, c.parentID, c.menuName, c.menuHref, c.remarkDescription as menu_remarkDescription, c.hasOperationChildren,
+         d.id as operation_id, d.operateName, d.remarkDescription as operation_remarkDescription
+    </sql>
+
+    <resultMap type="com.zyjd.kh.model.Permission" id="resp">
+         <id property="id" column="id"/>
+         <result property="menuID" column="menuID"/>
+         <result property="operateID" column="operateID"/>
+         <result property="permissionName" column="permissionName"/>
+		 <result property="permissionHref" column="permissionHref"/>
+		 <result property="remarkDescription" column="remarkDescription" />
+		 <association property="menu" javaType="Menu">
+			 <id property="id" column="menu_id"/>
+			 <result property="parentID" column="parentID"/>
+             <result property="menuName" column="menuName"/>
+			 <result property="menuHref" column="menuHref"/>
+			 <result property="remarkDescription" column="menu_remarkDescription" />
+			 <result property="hasOperationChildren" column="hasOperationChildren"/>
+         </association>
+         <association property="operation" javaType="Operation">
+			 <id property="id" column="operation_id"/>
+             <result property="operateName" column="operateName"/>
+			 <result property="remarkDescription" column="operation_remarkDescription" />
+         </association> 
+    </resultMap>
+
+    <insert id="add" parameterType="Role" useGeneratedKeys="true" keyProperty="id"  keyColumn="id">
+         insert into role
+         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>     
+            <if test="roleName != null">
+                roleName,
+            </if>
+			<if test="remarkDescription != null">
+				remarkDescription,
+			</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>      
+            <if test="roleName != null">
+                #{roleName},
+            </if>
+			<if test="remarkDescription != null">
+				#{remarkDescription},
+			</if>
+        </trim>
+    </insert>
+
+	<delete id="delete" parameterType="int">
+		delete from role where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="Role">
+		update role
+		<set>
+			<if test="roleName != null">
+				roleName = #{roleName},
+			</if>
+			<if test="remarkDescription != null">
+				remarkDescription = #{remarkDescription},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="findById" parameterType="int" resultMap="res">
+		select <include refid="base" /> from role where id = #{id} 
+	</select>
+
+    <select id="findAll" resultMap="res">
+		select <include refid="base" /> from role
+	</select>
+
+	<select id="findByCondition" parameterType="Role" resultMap="res">
+		select <include refid="base" /> from role
+		<where>
+			<!--模糊查询-->
+			<if test="searchString != null">
+				and (roleName like concat(concat('%', #{searchString}), '%')
+				or remarkDescription like concat(concat('%', #{searchString}), '%'))
+			</if>
+		</where>
+	</select>
+
+	<select id="findByConditions" parameterType="Role" resultMap="res">
+		select <include refid="base" /> from role
+		<where>
+			<if test="roleName != null">
+				and roleName = #{roleName}
+			</if>
+		</where>
+	</select>
+
+	<select id="findByConditionPage" parameterType="Role" resultMap="res">
+		select <include refid="base" /> from role
+		<where>
+			<!--模糊查询-->
+			<if test="searchString != null">
+				and (roleName like concat(concat('%', #{searchString}), '%')
+				or remarkDescription like concat(concat('%', #{searchString}), '%'))
+			</if>
+		</where>
+		<if test="start !=null and limit != null">
+			order by id limit #{start},#{limit}
+		</if>
+	</select>
+
+	<select id="findByRolePermissions" parameterType="Role" resultMap="resp">
+		select <include refid="basep" /> from role as a, permission as b, menu as c, operation as d, rolepermission as e
+		<where>
+			<if test="id != null">
+				and a.id = #{id}
+			</if>
+			<if test="searchString != null">
+				and c.menuName = #{searchString}
+			</if>
+			and a.id = e.roleID and b.id = e.permissionID and c.id = b.menuID and d.id = b.operateID
+		</where>
+	</select>
+
+</mapper>

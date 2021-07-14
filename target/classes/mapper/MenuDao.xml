@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyjd.kh.dao.MenuDao">
+
+    <sql id="base">
+          id, parentID, menuName, menuHref, remarkDescription, hasOperationChildren
+    </sql>
+
+    <resultMap type="com.zyjd.kh.model.Menu" id="res">
+         <id property="id" column="id"/>
+		 <result property="parentID" column="parentID"/>
+         <result property="menuName" column="menuName"/>
+		 <result property="menuHref" column="menuHref"/>
+		 <result property="remarkDescription" column="remarkDescription" />
+		 <result property="hasOperationChildren" column="hasOperationChildren"/>
+	</resultMap>
+
+    <insert id="add" parameterType="Menu" useGeneratedKeys="true" keyProperty="id"  keyColumn="id">
+         insert into menu
+         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+			<if test="parentID != null">
+				parentID,
+			</if>
+            <if test="menuName != null">
+                menuName,
+            </if>
+			<if test="menuHref != null">
+				menuHref,
+			</if>
+			<if test="remarkDescription != null">
+				remarkDescription,
+			</if>
+			<if test="hasOperationChildren != null">
+				hasOperationChildren,
+			</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+			<if test="parentID != null">
+				#{parentID},
+			</if>
+            <if test="menuName != null">
+                #{menuName},
+            </if>
+			<if test="menuHref != null">
+				#{menuHref},
+			</if>
+			<if test="remarkDescription != null">
+				#{remarkDescription},
+			</if>
+			<if test="hasOperationChildren != null">
+				#{hasOperationChildren},
+			</if>
+        </trim>
+    </insert>
+
+	<delete id="delete" parameterType="int">
+		delete from menu where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="Menu">
+		update menu
+		<set>
+			<if test="parentID != null">
+				parentID = #{parentID},
+			</if>
+			<if test="menuName != null">
+				menuName = #{menuName},
+			</if>
+			<if test="menuHref != null">
+				menuHref = #{menuHref},
+			</if>
+			<if test="remarkDescription != null">
+				remarkDescription = #{remarkDescription},
+			</if>
+			<if test="hasOperationChildren != null">
+				hasOperationChildren = #{hasOperationChildren},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="findById" parameterType="int" resultMap="res">
+		select <include refid="base" /> from menu where id = #{id}
+	</select>
+
+    <select id="findAll" resultMap="res">
+		select <include refid="base" /> from menu
+	</select>
+
+	<select id="findByCondition" parameterType="Menu" resultMap="res">
+		select <include refid="base" /> from menu
+		<where>
+			<!--模糊查询-->
+			<if test="searchString != null">
+				and (menuName like concat(concat('%', #{searchString}), '%')
+				or menuHref like concat(concat('%', #{searchString}), '%')
+				or remarkDescription like concat(concat('%', #{searchString}), '%'))
+			</if>
+			<if test="searchInteger != null">
+				and hasOperationChildren = #{searchInteger}
+			</if>
+		</where>
+	</select>
+
+	<select id="findByConditions" parameterType="Menu" resultMap="res">
+		select <include refid="base" /> from menu
+		<where>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="menuName != null">
+				and menuName = #{menuName}
+			</if>
+			<if test="parentID != null">
+				and parentID = #{parentID}
+			</if>
+		</where>
+	</select>
+
+	<select id="findByConditionPage" parameterType="Menu" resultMap="res">
+		select <include refid="base" /> from menu
+		<where>
+			<!--模糊查询-->
+			<if test="searchString != null">
+				and (menuName like concat(concat('%', #{searchString}), '%')
+				or menuHref like concat(concat('%', #{searchString}), '%')
+				or remarkDescription like concat(concat('%', #{searchString}), '%'))
+			</if>
+			<if test="searchInteger != null">
+				and hasOperationChildren = #{searchInteger}
+			</if>
+		</where>
+		<if test="start !=null and limit != null">
+			order by id limit #{start},#{limit}
+		</if>
+	</select>
+
+</mapper>

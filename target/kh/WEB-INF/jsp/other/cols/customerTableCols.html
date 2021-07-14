@@ -1,0 +1,31 @@
+<script type="text/html" id="customerNameTpl">
+    <span data-d="{{d.customerName}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.customerName}}</span>
+</script>
+<script type="text/html" id="customerPersonTpl">
+    <span data-d="{{d.customerPerson}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.customerPerson}}</span>
+</script>
+<script type="text/html" id="customerPhoneTpl">
+    <span data-d="{{d.customerPhone}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.customerPhone}}</span>
+</script>
+<script type="text/html" id="customerAddressTpl">
+    <span data-d="{{d.customerAddress}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.customerAddress}}</span>
+</script>
+<script type="text/html" id="customerLevelTpl">
+    {{#  if(d.customerLevel === 5){ }}
+    <span data-d="{{d.customerLevel}}星" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label"><i class='Hui-iconfont'>&#xe6ff;</i><i class='Hui-iconfont'>&#xe6ff;</i><i class='Hui-iconfont'>&#xe6ff;</i><i class='Hui-iconfont'>&#xe6ff;</i><i class='Hui-iconfont'>&#xe6ff;</i></span>
+    {{#  } else if(d.customerLevel === 4){ }}
+    <span data-d="{{d.customerLevel}}星" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label"><i class='Hui-iconfont'>&#xe6ff;</i><i class='Hui-iconfont'>&#xe6ff;</i><i class='Hui-iconfont'>&#xe6ff;</i><i class='Hui-iconfont'>&#xe6ff;</i></span>
+    {{#  } else if(d.customerLevel === 3){ }}
+    <span data-d="{{d.customerLevel}}星" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label"><i class='Hui-iconfont'>&#xe6ff;</i><i class='Hui-iconfont'>&#xe6ff;</i><i class='Hui-iconfont'>&#xe6ff;</i></span>
+    {{#  } else if(d.customerLevel === 2){ }}
+    <span data-d="{{d.customerLevel}}星" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label"><i class='Hui-iconfont'>&#xe6ff;</i><i class='Hui-iconfont'>&#xe6ff;</i></span>
+    {{#  } else { }}
+    <span data-d="{{d.customerLevel}}星" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label"><i class='Hui-iconfont'>&#xe6ff;</i></span>
+    {{#  } }}
+</script>
+<script type="text/html" id="createDateTpl">
+    <span data-d="{{layui.util.toDateString(d.createDate, 'yyyy-MM-dd HH:mm:ss')}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{layui.util.toDateString(d.createDate, 'yyyy-MM-dd HH:mm:ss')}}</span>
+</script>
+<script type="text/html" id="remarkDescriptionTpl">
+    <span data-d="{{d.remarkDescription}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.remarkDescription}}</span>
+</script>

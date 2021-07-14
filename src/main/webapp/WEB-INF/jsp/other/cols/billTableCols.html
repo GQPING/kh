@@ -1,0 +1,18 @@
+<script type="text/html" id="projectNameTpl">
+    <span data-d="{{d.project.projectName}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.project.projectName}}</span>
+</script>
+<script type="text/html" id="projectAddressTpl">
+    <span data-d="{{d.project.projectAddress}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.project.projectAddress}}</span>
+</script>
+<script type="text/html" id="billQuotaTpl">
+    <span data-d="{{d.billQuota}}元" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label" style="color: #009688;">{{ d.billQuota }}元</span>
+</script>
+<script type="text/html" id="billDateTpl">
+    <span data-d="{{layui.util.toDateString(d.billDate, 'yyyy-MM-dd')}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{layui.util.toDateString(d.billDate, 'yyyy-MM-dd')}}</span>
+</script>
+<script type="text/html" id="billTypeTpl">
+    <span data-d="{{d.billType}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.billType}}</span>
+</script>
+<script type="text/html" id="remarkDescriptionTpl">
+    <span data-d="{{d.remarkDescription}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.remarkDescription}}</span>
+</script>

@@ -1,0 +1,28 @@
+<div class="page-container">
+    <div class="mt">
+        <div class="demoTable layui-form" style="padding: 0px 0px 10px 0px;">
+            <div class="layui-inline">
+                项目客户：
+                <div class="layui-inline" style="width: 240px;">
+                    <select class="layui-input" id="customerIDFilter"
+                            lay-filter="customerIDFilter" lay-search>
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline" id="projectList">
+                &nbsp;项目名称：
+                <div class="layui-inline" style="width: 240px;">
+                    <select class="layui-input" id="projectIDFilter"
+                            lay-filter="projectIDFilter" lay-search>
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+            </div>
+            <a class="btn btn-success radius r" style="line-height: 1.6em; margin-top: 3px" href="javascript:location.replace(location.href);">
+                <i class="Hui-iconfont">&#xe68f;</i>
+            </a>
+        </div>
+    </div>
+    <table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
+</div>

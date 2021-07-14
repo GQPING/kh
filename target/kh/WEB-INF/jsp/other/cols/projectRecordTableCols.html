@@ -1,0 +1,33 @@
+<script type="text/html" id="payDateTpl">
+    <span data-d="{{layui.util.toDateString(d.payDate, 'yyyy-MM-dd')}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{layui.util.toDateString(d.payDate, 'yyyy-MM-dd')}}</span>
+</script>
+<script type="text/html" id="payTypeTpl">
+    <span data-d="{{d.payType}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.payType}}</span>
+</script>
+<script type="text/html" id="payPersonTpl">
+    <span data-d="{{d.payPerson}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.payPerson}}</span>
+</script>
+<script type="text/html" id="payQuotaTpl">
+    <span data-d="{{d.payQuota}}元" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label" style="color: #009688;">{{ d.payQuota }}元</span>
+</script>
+<script type="text/html" id="billDateTpl">
+    <span data-d="{{layui.util.toDateString(d.billDate, 'yyyy-MM-dd')}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{layui.util.toDateString(d.billDate, 'yyyy-MM-dd')}}</span>
+</script>
+<script type="text/html" id="billTypeTpl">
+    <span data-d="{{d.billType}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.billType}}</span>
+</script>
+<script type="text/html" id="billQuotaTpl">
+    <span data-d="{{d.billQuota}}元" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label" style="color: #009688;">{{ d.billQuota }}元</span>
+</script>
+<script type="text/html" id="contactNameTpl">
+    <span data-d="{{d.contactName}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.contactName}}</span>
+</script>
+<script type="text/html" id="contactPhoneTpl">
+    <span data-d="{{d.contactPhone}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.contactPhone}}</span>
+</script>
+<script type="text/html" id="createDateTpl">
+    <span data-d="{{layui.util.toDateString(d.createDate, 'yyyy-MM-dd HH:mm:ss')}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{layui.util.toDateString(d.createDate, 'yyyy-MM-dd HH:mm:ss')}}</span>
+</script>
+<script type="text/html" id="remarkDescriptionTpl">
+    <span data-d="{{d.remarkDescription}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.remarkDescription}}</span>
+</script>

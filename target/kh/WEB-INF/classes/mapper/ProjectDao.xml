@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyjd.kh.dao.ProjectDao">
+
+     <sql id="base">
+         a.id,a.customerID,a.signDate,a.projectNumber,a.projectType,a.projectName,a.projectAddress,
+         a.projectDescription,a.projectPerson,a.projectStartDate,a.projectFinalDate,a.projectCycle,
+         a.projectPrice,a.projectArea,a.projectDelay,a.projectBudget,a.projectCost,a.projectIncome,a.projectInQuota,
+         a.projectBadQuota,a.projectUnQuota,a.deadLineDate,a.projectPayState,a.remarkDescription,a.projectRemindDays,a.hasBill,a.hasApplyBill,
+         b.id as customer_ID,b.customerName,b.customerPerson,b.customerPhone,b.customerAddress,b.customerLevel,
+         b.createDate,b.remarkDescription as customer_remarkDescription
+    </sql>
+
+    <resultMap type="com.zyjd.kh.model.Project" id="res">
+        <id property="id" column="id" />
+        <result property="customerID" column="customerID" />
+	    <result property="signDate" column="signDate" />
+	    <result property="projectNumber" column="projectNumber" />
+	    <result property="projectType" column="projectType" />
+	    <result property="projectName" column="projectName" />
+	    <result property="projectAddress" column="projectAddress" />
+	    <result property="projectDescription" column="projectDescription" />
+	    <result property="projectPerson" column="projectPerson" />
+	    <result property="projectStartDate" column="projectStartDate" />
+	    <result property="projectFinalDate" column="projectFinalDate" />
+        <result property="projectCycle" column="projectCycle" />
+        <result property="projectPrice" column="projectPrice" />
+        <result property="projectArea" column="projectArea" />
+        <result property="projectDelay" column="projectDelay" />
+        <result property="projectBudget" column="projectBudget" />
+        <result property="projectCost" column="projectCost" />
+        <result property="projectIncome" column="projectIncome" />
+        <result property="projectInQuota" column="projectInQuota" />
+        <result property="projectBadQuota" column="projectBadQuota" />
+        <result property="projectUnQuota" column="projectUnQuota" />
+        <result property="deadLineDate" column="deadLineDate" />
+        <result property="projectPayState" column="projectPayState" />
+        <result property="remarkDescription" column="remarkDescription" />
+        <result property="projectRemindDays" column="projectRemindDays" />
+        <result property="hasBill" column="hasBill" />
+        <result property="hasApplyBill" column="hasApplyBill" />
+	    <association property="customer" javaType="Customer">
+            <id property="id" column="customer_ID"/>
+            <result property="customerName" column="customerName"/>
+            <result property="customerPerson" column="customerPerson"/>
+            <result property="customerPhone" column="customerPhone"/>
+            <result property="customerAddress" column="customerAddress"/>
+            <result property="customerLevel" column="customerLevel"/>
+            <result property="createDate" column="createDate"/>
+            <result property="remarkDescription" column="customer_remarkDescription" />
+         </association>
+    </resultMap>
+
+    <sql id="summary">
+         count(*) as projects, sum(projectBudget) as budgets, sum(projectCost) as costs, sum(projectIncome) as incomes,
+         sum(projectInQuota) as inQuotas, sum(projectUnQuota) as unQuotas, sum(projectDelay) as delayPays
+    </sql>
+
+    <resultMap type="com.zyjd.kh.model.Totals" id="total">
+        <result property="projects" column="projects" />
+        <result property="budgets" column="budgets" />
+        <result property="costs" column="costs" />
+        <result property="incomes" column="incomes" />
+        <result property="inQuotas" column="inQuotas" />
+        <result property="unQuotas" column="unQuotas" />
+        <result property="delayPays" column="delayPays" />
+    </resultMap>
+
+    <insert id="add" parameterType="Project" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="customerID != null">
+                customerID,
+            </if>
+            <if test="signDate != null">
+                signDate,
+            </if>
+            <if test="projectNumber != null">
+                projectNumber,
+            </if>
+            <if test="projectType != null">
+                projectType,
+            </if>
+            <if test="projectName != null">
+                projectName,
+            </if>
+            <if test="projectAddress != null">
+                projectAddress,
+            </if>
+            <if test="projectDescription != null">
+                projectDescription,
+            </if>
+            <if test="projectPerson != null">
+                projectPerson,
+            </if>
+            <if test="projectStartDate != null">
+                projectStartDate,
+            </if>
+            <if test="projectFinalDate != null">
+                projectFinalDate,
+            </if>
+            <if test="projectCycle != null">
+                projectCycle,
+            </if>
+            <if test="projectPrice != null">
+                projectPrice,
+            </if>
+            <if test="projectArea != null">
+                projectArea,
+            </if>
+            <if test="projectDelay != null">
+                projectDelay,
+            </if>
+            <if test="projectBudget != null">
+                projectBudget,
+            </if>
+            <if test="projectCost != null">
+                projectCost,
+            </if>
+            <if test="projectIncome != null">
+                projectIncome,
+            </if>
+            <if test="projectInQuota != null">
+                projectInQuota,
+            </if>
+            <if test="projectBadQuota != null">
+                projectBadQuota,
+            </if>
+            <if test="projectUnQuota != null">
+                projectUnQuota,
+            </if>
+            <if test="deadLineDate != null">
+                deadLineDate,
+            </if>
+            <if test="projectPayState != null">
+                projectPayState,
+            </if>
+            <if test="remarkDescription != null">
+                remarkDescription,
+            </if>
+            <if test="projectRemindDays != null">
+                projectRemindDays,
+            </if>
+            <if test="hasBill != null">
+                hasBill,
+            </if>
+            <if test="hasApplyBill != null">
+                hasApplyBill,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="customerID != null">
+                #{customerID},
+            </if>
+            <if test="signDate != null">
+                #{signDate},
+            </if>
+            <if test="projectNumber != null">
+                #{projectNumber},
+            </if>
+            <if test="projectType != null">
+                #{projectType},
+            </if>
+            <if test="projectName != null">
+                #{projectName},
+            </if>
+            <if test="projectAddress != null">
+                #{projectAddress},
+            </if>
+            <if test="projectDescription != null">
+                #{projectDescription},
+            </if>
+            <if test="projectPerson != null">
+                #{projectPerson},
+            </if>
+            <if test="projectStartDate != null">
+                #{projectStartDate},
+            </if>
+            <if test="projectFinalDate != null">
+                #{projectFinalDate},
+            </if>
+            <if test="projectCycle != null">
+                #{projectCycle},
+            </if>
+            <if test="projectPrice != null">
+                #{projectPrice},
+            </if>
+            <if test="projectArea != null">
+                #{projectArea},
+            </if>
+            <if test="projectDelay != null">
+                #{projectDelay},
+            </if>
+            <if test="projectBudget != null">
+                #{projectBudget},
+            </if>
+            <if test="projectCost != null">
+                #{projectCost},
+            </if>
+            <if test="projectIncome != null">
+                #{projectIncome},
+            </if>
+            <if test="projectInQuota != null">
+                #{projectInQuota},
+            </if>
+            <if test="projectBadQuota != null">
+                #{projectBadQuota},
+            </if>
+            <if test="projectUnQuota != null">
+                #{projectUnQuota},
+            </if>
+            <if test="deadLineDate != null">
+                #{deadLineDate},
+            </if>
+            <if test="projectPayState != null">
+                #{projectPayState},
+            </if>
+            <if test="remarkDescription != null">
+                #{remarkDescription},
+            </if>
+            <if test="projectRemindDays != null">
+                #{projectRemindDays},
+            </if>
+            <if test="hasBill != null">
+                #{hasBill},
+            </if>
+            <if test="hasApplyBill != null">
+                #{hasApplyBill},
+            </if>
+        </trim>
+    </insert>
+    
+	<delete id="delete" parameterType="int">
+		delete from project where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="Project">
+		update project
+		<set>
+            <if test="customerID != null">
+                customerID = #{customerID},
+            </if>
+            <if test="signDate != null">
+                signDate = #{signDate},
+            </if>
+		    <if test="projectNumber != null">
+				projectNumber = #{projectNumber},
+			</if>
+            <if test="projectType != null">
+                projectType = #{projectType},
+            </if>
+            <if test="projectName != null">
+                projectName = #{projectName},
+            </if>
+            <if test="projectAddress != null">
+                projectAddress = #{projectAddress},
+            </if>
+            <if test="projectDescription != null">
+                projectDescription = #{projectDescription},
+            </if>
+            <if test="projectPerson != null">
+                projectPerson = #{projectPerson},
+            </if>
+			<if test="projectStartDate != null">
+				projectStartDate = #{projectStartDate},
+			</if>
+			<if test="projectFinalDate != null">
+				projectFinalDate = #{projectFinalDate},
+			</if>
+			<if test="projectCycle != null">
+				projectCycle = #{projectCycle},
+			</if>
+			<if test="projectPrice != null">
+				projectPrice = #{projectPrice},
+			</if>
+			<if test="projectArea != null">
+				projectArea = #{projectArea},
+			</if>
+            <if test="projectDelay != null">
+                projectDelay = #{projectDelay},
+            </if>
+			<if test="projectBudget != null">
+				projectBudget = #{projectBudget},
+			</if>
+			<if test="projectCost != null">
+				projectCost = #{projectCost},
+			</if>
+			<if test="projectIncome != null">
+				projectIncome = #{projectIncome},
+			</if>
+			<if test="projectInQuota != null">
+				projectInQuota = #{projectInQuota},
+			</if>
+            <if test="projectBadQuota != null">
+                projectBadQuota = #{projectBadQuota},
+            </if>
+			<if test="projectUnQuota != null">
+				projectUnQuota = #{projectUnQuota},
+			</if>
+			<if test="deadLineDate != null">
+				deadLineDate = #{deadLineDate},
+			</if>
+			<if test="projectPayState != null">
+				projectPayState = #{projectPayState},
+			</if>
+			<if test="remarkDescription != null">
+				remarkDescription = #{remarkDescription},
+			</if>
+			<if test="projectRemindDays != null">
+				projectRemindDays = #{projectRemindDays},
+			</if>
+            <if test="hasBill != null">
+                hasBill = #{hasBill},
+            </if>
+            <if test="hasApplyBill != null">
+                hasApplyBill = #{hasApplyBill},
+            </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="findById" parameterType="int" resultMap="res">
+		select <include refid="base" /> from project as a left join customer as b on a.customerID = b.id where a.id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="res">
+		select <include refid="base" /> from project as a left join customer as b on a.customerID = b.id order by a.signDate DESC
+	</select>
+    
+	<select id="findByCondition" parameterType="Project" resultMap="res">
+		select <include refid="base" /> from project as a left join customer as b on a.customerID = b.id
+		<where>
+            <!--不与searchString同时存在-->
+            <if test="customerID != null">
+                and a.customerID = #{customerID}
+            </if>
+            <if test="hasBill != null">
+                and a.hasBill = #{hasBill}
+            </if>
+            <if test="hasApplyBill != null">
+                and a.hasApplyBill = #{hasApplyBill}
+            </if>
+            <if test="isFinished != null and isFinished==1">
+                and TIMESTAMPDIFF(DAY,CURDATE(),projectFinalDate) &lt;= 0
+            </if>
+            <if test="isFinished != null and isFinished==0">
+                and TIMESTAMPDIFF(DAY,CURDATE(),projectFinalDate) &gt; 0
+            </if>
+            <if test="isPayEnd == null and projectPayState != null">
+                and a.projectPayState = #{projectPayState}
+            </if>
+            <if test="isPayEnd != null and projectPayState != null">
+                and a.projectPayState != #{projectPayState}
+            </if>
+            <!--模糊查询-->
+            <if test="searchString != null">
+                and (a.projectNumber like concat(concat('%', #{searchString}), '%')
+                or a.projectType like concat(concat('%', #{searchString}), '%')
+                or a.projectName like concat(concat('%', #{searchString}), '%')
+                or a.projectAddress like concat(concat('%', #{searchString}), '%')
+                or a.projectDescription like concat(concat('%', #{searchString}), '%')
+                or a.projectPerson like concat(concat('%', #{searchString}), '%')
+                or a.projectPayState like concat(concat('%', #{searchString}), '%')
+                or a.remarkDescription like concat(concat('%', #{searchString}), '%')
+                or b.customerName like concat(concat('%', #{searchString}), '%'))
+            </if>
+            <if test="timeStart != null and timeFinal!=null">
+                and (
+                ((year(a.signDate) between year(#{timeStart}) and year(#{timeFinal}))
+                and (month(a.signDate) between month(#{timeStart}) and month(#{timeFinal}))
+                and (day(a.signDate) between day(#{timeStart}) and day(#{timeFinal})))
+                or
+                ((year(a.deadLineDate) between year(#{timeStart}) and year(#{timeFinal}))
+                and (month(a.deadLineDate) between month(#{timeStart}) and month(#{timeFinal}))
+                and (day(a.deadLineDate) between day(#{timeStart}) and day(#{timeFinal})))
+                )
+            </if>
+            <if test="timeStart != null and timeFinal==null">
+                and ((year(a.signDate) = year(#{timeStart}) and month(a.signDate) = month(#{timeStart}) and day(a.signDate) = day(#{timeStart})) or (year(a.deadLineDate) = year(#{timeStart}) and month(a.deadLineDate) = month(#{timeStart}) and day(a.deadLineDate) = day(#{timeStart})))
+            </if>
+            <if test="timeStart == null and timeFinal!=null">
+                and ((year(a.signDate) = year(#{timeFinal}) and month(a.signDate) = month(#{timeFinal}) and day(a.signDate) = day(#{timeFinal})) or (year(a.deadLineDate) = year(#{timeFinal}) and month(a.deadLineDate) = month(#{timeFinal}) and day(a.deadLineDate) = day(#{timeFinal})))
+            </if>
+		</where>
+        order by a.signDate DESC
+	</select>
+
+    <select id="findByConditions" parameterType="Project" resultMap="res">
+        select <include refid="base" /> from project as a left join customer as b on a.customerID = b.id
+        <where>
+            <if test="id != null">
+                and a.id = #{id}
+            </if>
+            <if test="customerID != null">
+                and a.customerID = #{customerID}
+            </if>
+            <if test="hasBill != null">
+                and a.hasBill = #{hasBill}
+            </if>
+            <if test="hasApplyBill != null">
+                and a.hasApplyBill = #{hasApplyBill}
+            </if>
+            <if test="projectNumber != null">
+                and a.projectNumber = #{projectNumber}
+            </if>
+            <if test="projectType != null">
+                and a.projectType = #{projectType}
+            </if>
+            <if test="projectName != null">
+                and a.projectName = #{projectName}
+            </if>
+            <if test="projectAddress != null">
+                and a.projectAddress = #{projectAddress}
+            </if>
+            <if test="projectPerson != null">
+                and a.projectPerson = #{projectPerson}
+            </if>
+            <if test="isFinished != null and isFinished==1">
+                and TIMESTAMPDIFF(DAY,CURDATE(),projectFinalDate) &lt;= 0
+            </if>
+            <if test="isFinished != null and isFinished==0">
+                and TIMESTAMPDIFF(DAY,CURDATE(),projectFinalDate) &gt; 0
+            </if>
+            <if test="isPayEnd == null and projectPayState != null">
+                and a.projectPayState = #{projectPayState}
+            </if>
+            <if test="isPayEnd != null and projectPayState != null">
+                and a.projectPayState != #{projectPayState}
+            </if>
+            <if test="isDeadLine != null">
+                and TIMESTAMPDIFF(DAY,CURDATE(),deadLineDate) &lt;= projectRemindDays
+            </if>
+        </where>
+    </select>
+    
+    <select id="findByConditionPage" parameterType="Project" resultMap="res">
+		select <include refid="base" /> from project as a left join customer as b on a.customerID = b.id
+		<where>
+	        <!--不与searchString同时存在-->
+            <if test="customerID != null">
+                and a.customerID = #{customerID}
+            </if>
+            <if test="hasBill != null">
+                and a.hasBill = #{hasBill}
+            </if>
+            <if test="hasApplyBill != null">
+                and a.hasApplyBill = #{hasApplyBill}
+            </if>
+            <if test="isFinished != null and isFinished==1">
+                and TIMESTAMPDIFF(DAY,CURDATE(),projectFinalDate) &lt;= 0
+            </if>
+            <if test="isFinished != null and isFinished==0">
+                and TIMESTAMPDIFF(DAY,CURDATE(),projectFinalDate) &gt; 0
+            </if>
+            <if test="isPayEnd == null and projectPayState != null">
+                and a.projectPayState = #{projectPayState}
+            </if>
+            <if test="isPayEnd != null and projectPayState != null">
+                and a.projectPayState != #{projectPayState}
+            </if>
+            <!--模糊查询-->
+            <if test="searchString != null">
+                and (a.projectNumber like concat(concat('%', #{searchString}), '%')
+                or a.projectType like concat(concat('%', #{searchString}), '%')
+                or a.projectName like concat(concat('%', #{searchString}), '%')
+                or a.projectAddress like concat(concat('%', #{searchString}), '%')
+                or a.projectDescription like concat(concat('%', #{searchString}), '%')
+                or a.projectPerson like concat(concat('%', #{searchString}), '%')
+                or a.projectPayState like concat(concat('%', #{searchString}), '%')
+                or a.remarkDescription like concat(concat('%', #{searchString}), '%')
+                or b.customerName like concat(concat('%', #{searchString}), '%'))
+            </if>
+            <if test="timeStart != null and timeFinal!=null">
+                and (
+                ((year(a.signDate) between year(#{timeStart}) and year(#{timeFinal}))
+                and (month(a.signDate) between month(#{timeStart}) and month(#{timeFinal}))
+                and (day(a.signDate) between day(#{timeStart}) and day(#{timeFinal})))
+                or
+                ((year(a.deadLineDate) between year(#{timeStart}) and year(#{timeFinal}))
+                and (month(a.deadLineDate) between month(#{timeStart}) and month(#{timeFinal}))
+                and (day(a.deadLineDate) between day(#{timeStart}) and day(#{timeFinal})))
+                )
+            </if>
+            <if test="timeStart != null and timeFinal==null">
+                and ((year(a.signDate) = year(#{timeStart}) and month(a.signDate) = month(#{timeStart}) and day(a.signDate) = day(#{timeStart})) or (year(a.deadLineDate) = year(#{timeStart}) and month(a.deadLineDate) = month(#{timeStart}) and day(a.deadLineDate) = day(#{timeStart})))
+            </if>
+            <if test="timeStart == null and timeFinal!=null">
+                and ((year(a.signDate) = year(#{timeFinal}) and month(a.signDate) = month(#{timeFinal}) and day(a.signDate) = day(#{timeFinal})) or (year(a.deadLineDate) = year(#{timeFinal}) and month(a.deadLineDate) = month(#{timeFinal}) and day(a.deadLineDate) = day(#{timeFinal})))
+            </if>
+		</where>
+		<if test="start !=null and limit != null">
+			order by a.signDate DESC,a.id limit #{start},#{limit}
+		</if>
+	</select>
+
+    <select id="findTotalByCondition" parameterType="Project" resultMap="total">
+        select <include refid="summary" /> from project
+        <where>
+            <if test="customerID != null">
+                and customerID = #{customerID}
+            </if>
+            <if test="projectName != null">
+                and projectName = #{projectName}
+            </if>
+            <if test="projectPerson != null">
+                and projectPerson = #{projectPerson}
+            </if>
+            <if test="projectPayState != null">
+                and projectPayState = #{projectPayState}
+            </if>
+            <if test="isYear != null">
+                and year(signDate) = year(#{signDate})
+            </if>
+            <if test="isMonth != null">
+                and year(signDate) = year(#{signDate})
+                and month(signDate) = month(#{signDate})
+            </if>
+            <if test="isToday != null">
+                and year(signDate) = year(now())
+                and month(signDate) = month(now())
+                and day(signDate) = day(now())
+            </if>
+            <if test="isDeadLine != null">
+                and TIMESTAMPDIFF(DAY,CURDATE(),deadLineDate) &lt;= 0
+            </if>
+        </where>
+    </select>
+
+</mapper>

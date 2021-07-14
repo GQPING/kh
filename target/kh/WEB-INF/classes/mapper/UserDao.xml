@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyjd.kh.dao.UserDao">
+
+    <sql id="base">
+         a.id, a.roleID, a.nickName, a.password, a.userName, a.createDate, a.remarkDescription,
+         b.id as role_id, b.roleName, b.remarkDescription as role_remarkDescription
+    </sql>
+
+    <resultMap type="com.zyjd.kh.model.User" id="res">
+         <id property="id" column="id"/>
+         <result property="roleID" column="roleID"/>
+         <result property="nickName" column="nickName"/>
+         <result property="password" column="password"/>
+         <result property="userName" column="userName"/>
+         <result property="createDate" column="createDate"/>
+         <result property="remarkDescription" column="remarkDescription" />
+         <association property="role" javaType="Role">
+            <id property="id" column="role_id"/>
+            <result property="roleName" column="roleName"/>
+            <result property="remarkDescription" column="role_remarkDescription" />
+         </association>   
+    </resultMap>
+
+    <insert id="add" parameterType="User" useGeneratedKeys="true" keyProperty="id"  keyColumn="id">
+         insert into user
+         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="roleID != null">
+                roleID,
+            </if>
+            <if test="nickName != null">
+                nickName,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="userName != null">
+                userName,
+            </if>
+            <if test="createDate != null">
+                createDate,
+            </if>
+            <if test="remarkDescription != null">
+                remarkDescription,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="roleID != null">
+                #{roleID},
+            </if>
+            <if test="nickName != null">
+                #{nickName},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="userName != null">
+                #{userName},
+            </if>
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+            <if test="remarkDescription != null">
+                #{remarkDescription},
+            </if>
+        </trim>
+    </insert>
+
+	<delete id="delete" parameterType="int">
+		delete from user where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="User">
+		update user
+		<set>
+		    <if test="roleID != null">
+                roleID = #{roleID},
+            </if>
+		    <if test="nickName != null">
+				nickName = #{nickName},
+			</if>
+			<if test="password != null">
+				password = #{password},
+			</if>
+            <if test="userName != null">
+                userName = #{userName},
+            </if>
+            <if test="remarkDescription != null">
+                remarkDescription = #{remarkDescription},
+            </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="findById" parameterType="int" resultMap="res">
+		select <include refid="base" /> from user as a left join role as b on a.roleID = b.id where a.id = #{id}
+	</select>
+
+    <select id="findAll" resultMap="res">
+		select <include refid="base" /> from user as a left join role as b on a.roleID = b.id
+	</select>
+
+	<select id="findByCondition" parameterType="User" resultMap="res">
+		select <include refid="base" /> from user as a left join role as b on a.roleID = b.id
+		<where>
+            <!--模糊查询-->
+            <if test="searchString != null">
+                and (a.nickName like concat(concat('%', #{searchString}), '%')
+                or a.userName like concat(concat('%', #{searchString}), '%')
+                or b.roleName like concat(concat('%', #{searchString}), '%'))
+            </if>
+            <if test="timeStart != null and timeFinal!=null">
+                and a.createDate between #{timeStart} and #{timeFinal}
+            </if>
+            <if test="timeStart != null and timeFinal==null">
+                and (year(a.createDate) = year(#{timeStart}) and month(a.createDate) = month(#{timeStart}) and day(a.createDate) = day(#{timeStart}))
+            </if>
+            <if test="timeStart == null and timeFinal!=null">
+                and (year(a.createDate) = year(#{timeFinal}) and month(a.createDate) = month(#{timeFinal}) and day(a.createDate) = day(#{timeFinal}))
+            </if>
+		</where>
+	</select>
+
+    <select id="findByConditions" parameterType="User" resultMap="res">
+        select <include refid="base" /> from user as a left join role as b on a.roleID = b.id
+        <where>
+            <if test="nickName != null">
+                and a.nickName = #{nickName}
+            </if>
+            <if test="userName != null">
+                and a.userName = #{userName}
+            </if>
+        </where>
+    </select>
+
+	<select id="findByConditionPage" parameterType="User" resultMap="res">
+		select <include refid="base" /> from user as a left join role as b on a.roleID = b.id
+		<where>
+            <!--模糊查询-->
+            <if test="searchString != null">
+                and (a.nickName like concat(concat('%', #{searchString}), '%')
+                or a.userName like concat(concat('%', #{searchString}), '%')
+                or b.roleName like concat(concat('%', #{searchString}), '%'))
+            </if>
+            <if test="timeStart != null and timeFinal!=null">
+                and a.createDate between #{timeStart} and #{timeFinal}
+            </if>
+            <if test="timeStart != null and timeFinal==null">
+                and (year(a.createDate) = year(#{timeStart}) and month(a.createDate) = month(#{timeStart}) and day(a.createDate) = day(#{timeStart}))
+            </if>
+            <if test="timeStart == null and timeFinal!=null">
+                and (year(a.createDate) = year(#{timeFinal}) and month(a.createDate) = month(#{timeFinal}) and day(a.createDate) = day(#{timeFinal}))
+            </if>
+		</where>
+		<if test="start !=null and limit != null">
+			order by a.id limit #{start},#{limit}
+		</if>
+	</select>
+
+    <select id="findCountByCondition" parameterType="User" resultType="Integer">
+        select count(*) from user
+        <where>
+            <if test="isToday != null">
+                and year(createDate) = year(now())
+                and month(createDate) = month(now())
+                and day(createDate) = day(now())
+            </if>
+        </where>
+    </select>
+
+</mapper>

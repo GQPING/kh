@@ -1,0 +1,193 @@
+<div id="bjnrRecord" style="display: none;">
+    <div style="padding: 13px;">
+        <table class="table table-border table-bordered table-bg table-hover">
+            <caption style="line-height:40px;"><label id="projectNameTitle" style="font-size: 20px;font-weight: bold;"></label></caption>
+            <colgroup>
+                <col width="85">
+                <col>
+            </colgroup>
+            <tbody>
+            <tr>
+                <td style="text-align: right;">项目编号：</td>
+                <td>
+                    <label id="projectNumberLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">项目名称：</td>
+                <td>
+                    <label id="projectNameLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">项目地址：</td>
+                <td>
+                    <label id="projectAddressLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">签订日期：</td>
+                <td>
+                    <label id="signDateLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">项目类型：</td>
+                <td>
+                    <label id="projectTypeLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">项目客户：</td>
+                <td>
+                    <label id="customerIDLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">联&nbsp; 系 人：</td>
+                <td>
+                    <label id="contactNameLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">联系电话：</td>
+                <td>
+                    <label id="contactPhoneLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">负&nbsp; 责 人：</td>
+                <td>
+                    <label id="projectPersonLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">项目概况：</td>
+                <td>
+                    <label id="projectDescriptionLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">进场日期：</td>
+                <td>
+                    <label id="projectStartDateLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">完工日期：</td>
+                <td>
+                    <label id="projectFinalDateLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">项目周期：</td>
+                <td>
+                    <label id="projectCycleLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">截止日期：</td>
+                <td>
+                    <label id="deadLineDateLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">提醒天数：</td>
+                <td>
+                    <label id="projectRemindDaysLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">开荒面积：</td>
+                <td>
+                    <label id="projectAreaLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">开荒单价：</td>
+                <td>
+                    <label id="projectPriceLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">滞纳金额：</td>
+                <td>
+                    <label id="projectDelayLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">应收款项：</td>
+                <td>
+                    <label id="projectBudgetLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">项目预算：</td>
+                <td>
+                    <label id="projectCostLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">项目收入：</td>
+                <td>
+                    <label id="projectIncomeLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">项目回款：</td>
+                <td>
+                    <label id="projectInQuotaLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">项目坏账：</td>
+                <td>
+                    <label id="projectBadQuotaLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">项目余款：</td>
+                <td>
+                    <label id="projectUnQuotaLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">项目状态：</td>
+                <td>
+                    <label id="projectPayStateLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">是否开票：</td>
+                <td>
+                    <label id="hasBillLabel" class="form-label"></label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">项目备注：</td>
+                <td>
+                    <label id="remarkDescriptionLabel" class="form-label"></label>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-tab" lay-filter="recordTab">
+        <ul class="layui-tab-title">
+            <li class="layui-this" lay-id="6">收款记录</li>
+            <li lay-id="7">开票记录</li>
+            <li lay-id="8">联系人列表</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <table class="layui-hide" id="LAY_table_user6" lay-filter="user6"></table>
+            </div>
+            <div class="layui-tab-item">
+                <table class="layui-hide" id="LAY_table_user7" lay-filter="user7"></table>
+            </div>
+            <div class="layui-tab-item">
+                <table class="layui-hide" id="LAY_table_user8" lay-filter="user8"></table>
+            </div>
+        </div>
+    </div>
+</div>

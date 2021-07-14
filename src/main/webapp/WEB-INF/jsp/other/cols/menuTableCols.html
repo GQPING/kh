@@ -1,0 +1,22 @@
+<script type="text/html" id="idTpl">
+    <span data-d="{{d.id}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.id}}</span>
+</script>
+<script type="text/html" id="menuNameTpl">
+    <span data-d="{{d.menuName}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.menuName}}</span>
+</script>
+<script type="text/html" id="parentNameTpl">
+    {{# if(d.parent==null){}}
+    <span data-d="---" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">---</span>
+    {{# }else{ }}
+    <span data-d="{{d.parent.menuName}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.parent.menuName}}</span>
+    {{#  } }}
+</script>
+<script type="text/html" id="menuHrefTpl">
+    <span data-d="{{d.menuHref}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.menuHref}}</span>
+</script>
+<script type="text/html" id="remarkDescriptionTpl">
+    <span data-d="{{d.remarkDescription}}" onmouseover="show_shopm(this)" onmouseout="exit_shopm()" class="layui-table-label">{{d.remarkDescription}}</span>
+</script>
+<script type="text/html" id="hasOperationChildrenTpl">
+    <input type="checkbox" name="hasOperation" value="{{d.id}}" lay-skin="switch" lay-text="有|无" lay-filter="hasOperation" {{ d.hasOperationChildren==1?'checked':'' }}>
+</script>
